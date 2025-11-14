@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Play - 영상 재생</title>
+    <link rel="stylesheet" href="main.css"> 
+    <link rel="stylesheet" href="play.css"> <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="nav-left">
+            <div class="logo-image">
+                <img src="./image/logo.png" alt="Emoji Playlist 로고" width="30" height="30">
+            </div>
+            <a href="main.html" class="nav-title">Emoji Playlist</a>
+            <a href="#" id="emotion-diary-link" class="nav-link">Emotion diary</a>
+        </div>
+        <div class="nav-right">
+            <button id="auth-btn" class="nav-button primary">로그인</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <section class="mood-context">
+            <p class="context-text">당신이 선택한 Mood Play:</p>
+            <div class="keyword-chips" id="context-chips">
+                </div>
+        </section>
+
+        <div class="video-container-grid">
+            
+            <section class="player-area">
+    
+    <div id="player-container"> 
+        
+        <div id="player">
+            <div class="video-placeholder">영상을 불러오는 중...</div>
+        </div>
+        
+    </div>
+
+    <div class="video-actions-info">
+        <div class="info-details">
+            <h1 id="video-title">로딩 중...</h1>
+            <p id="channel-title" class="channel-name"></p>
+        </div>
+        
+        <div class="action-buttons">
+            <button id="like-btn" class="action-btn like-btn">
+                <span class="material-icons">favorite_border</span>
+                <span>MyList에 추가</span>
+            </button>
+            <button id="diary-btn" class="action-btn primary-action-btn">
+                <span class="material-icons">edit_note</span>
+                <span>오늘의 감정 기록하기</span>
+            </button>
+        </div>
+        
+        <div class="hashtag-list" id="hashtag-list">
+        </div>
+    </div>
+    
+</section>
+            
+            <section class="recommendation-area">
+                <h2>▶️ 이 플레이리스트의 다른 추천 영상</h2>
+                <div id="recommendation-list" class="recommendation-list">
+                    </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="main.js"></script>
+    <script src="play.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Play - 플레이리스트</title>
+    <link rel="stylesheet" href="main.css"> 
+    <link rel="stylesheet" href="list.css"> <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="nav-left">
+            <div class="logo-image">
+                <img src="./image/logo.png" alt="Emoji Playlist 로고" width="30" height="30">
+            </div>
+            <a href="main.html" class="nav-title">Emoji Playlist</a>
+            <a href="#" id="emotion-diary-link" class="nav-link">Emotion diary</a>
+        </div>
+        <div class="nav-right">
+            <button id="auth-btn" class="nav-button primary">메인으로</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <section class="selection-display">
+            <h2>선택한 Mood Play</h2>
+            <div class="keyword-chips">
+                </div>
+        </section>
+
+        <hr class="divider">
+
+        <section class="video-list-section">
+            <h2 id="list-header">플레이리스트를 불러오는 중입니다...</h2>
+            
+            <div id="loading-indicator" class="loading">영상을 검색하고 있습니다... 🎶</div>
+            
+            <div id="error-message" class="error-msg" style="display:none;"></div>
+
+            <div id="video-list-container" class="video-list-grid">
+                </div>
+        </section>
+
+    </main>
+
+    <script src="list.js"></script>
+    </body>
+</html>

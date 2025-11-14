@@ -1,0 +1,200 @@
+/* play.css */
+
+/* --- 메인 콘텐츠 레이아웃 --- */
+.container {
+    padding-top: 30px;
+    /* list.html과 달리, 영상 플레이어를 위해 너비를 조금 더 넓힙니다. */
+    max-width: 1200px;
+}
+
+.video-container-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* 플레이어 2: 추천 리스트 1 비율 */
+    gap: 30px;
+}
+
+@media (max-width: 900px) {
+    .video-container-grid {
+        grid-template-columns: 1fr; /* 모바일에서는 수직 배열 */
+    }
+}
+
+/* --- 감정/장르 컨텍스트 칩 (main/list.css의 .chip 스타일 사용) --- */
+.mood-context {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.context-text {
+    font-size: 0.9em;
+    color: var(--light-text-color);
+    margin-bottom: 10px;
+}
+
+#context-chips {
+    display: flex;
+    gap: 15px;
+}
+
+.chip {
+    /* list.css에서 정의된 스타일 재사용 */
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    border-radius: 50px;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-weight: 700;
+    font-size: 0.95em;
+    box-shadow: none;
+}
+.chip .emoji-icon {
+    font-size: 1.2em;
+    margin-right: 8px;
+}
+
+/* ---------------------------------------------------- */
+/* --- 🛠️ 수정된 영상 플레이어 영역 스타일 --- */
+/* ---------------------------------------------------- */
+.player-area {
+    /* 비디오 플레이어와 정보 영역을 포함 */
+}
+
+/* 🚀 [수정] #player-iframe 대신 #player-container를 사용 */
+#player-container {
+    position: relative;
+    width: 100%;
+    /* 16:9 비율 유지 */
+    padding-top: 56.25%; 
+    background-color: #000;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 🚀 [수정] YT Player가 삽입될 #player와 그 안의 iframe에 100% 크기 적용 */
+#player, #player iframe, .video-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+.video-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2em;
+}
+
+/* --- 영상 정보 및 액션 영역 --- */
+.video-actions-info {
+    padding-top: 20px;
+}
+
+#video-title {
+    font-size: 1.8em;
+    font-weight: 900;
+    margin-bottom: 5px;
+}
+
+.channel-name {
+    font-size: 1em;
+    color: var(--light-text-color);
+    margin-bottom: 15px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* 좋아요 버튼 스타일 */
+.like-btn {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid #ddd;
+}
+.like-btn:hover {
+    background-color: #eee;
+}
+.like-btn.liked {
+    background-color: crimson;
+    color: white;
+    border-color: crimson;
+}
+.like-btn.liked .material-icons {
+    color: white;
+}
+.like-btn .material-icons {
+    margin-right: 5px;
+}
+
+/* 해시태그 리스트 */
+.hashtag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.hashtag {
+    background-color: #eee;
+    color: var(--light-text-color);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+/* --- 추천 영상 영역 --- */
+.recommendation-area h2 {
+    font-size: 1.2em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.recommendation-item {
+    display: flex;
+    margin-bottom: 15px;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: opacity 0.2s;
+}
+
+.recommendation-item:hover {
+    opacity: 0.8;
+}
+
+.rec-thumb img {
+    width: 120px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.rec-info h4 {
+    font-size: 1em;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.rec-info p {
+    font-size: 0.85em;
+    color: var(--light-text-color);
+}

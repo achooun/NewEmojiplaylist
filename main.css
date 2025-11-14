@@ -1,0 +1,309 @@
+/* CSS 초기화 및 기본 설정 */
+:root {
+    --primary-color: #5B8C51; /* 주 색상 (자연적이고 편안한 색) */
+    --secondary-color: #A9D18E; /* 보조 색상 */
+    --text-color: #212121; /* 진한 텍스트 색상 */
+    --light-text-color: #6a6a6a;
+    --background-color: #fff; /* 메인 배경을 흰색으로 변경 (Atomize 참고) */
+    --card-bg: #f7f7f7; /* 카드 배경은 살짝 회색 */
+    --modal-bg: rgba(0, 0, 0, 0.6);
+    --border-radius: 12px;
+    --font-family: 'Noto Sans KR', sans-serif;
+    --shadow-color: rgba(0, 0, 0, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- 내비게이션 바 스타일 (Atomize 참고) --- */
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    border-bottom: 1px solid #eee;
+    background-color: var(--background-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 25px; /* 항목 간 간격 */
+}
+
+.logo-image {
+    display: flex;
+    align-items: center;
+}
+
+.nav-title {
+    font-size: 1.2em;
+    font-weight: 900; /* 매우 두껍게 */
+    color: var(--text-color);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+.nav-link {
+    font-size: 0.95em;
+    color: var(--light-text-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+.nav-button {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid #ddd;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.nav-button.primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.nav-button:hover {
+    border-color: var(--primary-color);
+}
+
+.nav-button.primary:hover {
+    background-color: #4C7043;
+    border-color: #4C7043;
+}
+
+/* --- 메인 헤더 영역 (Hero Section) --- */
+.hero-section {
+    text-align: center;
+    padding: 80px 0 60px;
+}
+
+.tagline {
+    font-size: 1em;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+h1 {
+    font-size: 3.5em; /* 굵고 강조된 텍스트 */
+    font-weight: 900;
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.highlight {
+    color: var(--primary-color);
+}
+
+.subtitle {
+    font-size: 1.1em;
+    color: var(--light-text-color);
+    margin-bottom: 40px;
+}
+
+/* --- 셀렉션 영역 --- */
+.selection-section {
+    padding: 40px 0;
+}
+
+.selection-section h2 {
+    text-align: center;
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--text-color);
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.selection-card {
+    background-color: var(--card-bg);
+    padding: 20px 10px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.selection-card:hover {
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.selection-card.selected {
+    border-color: var(--primary-color);
+    background-color: var(--secondary-color);
+    box-shadow: 0 4px 12px rgba(91, 140, 81, 0.2);
+}
+
+.selection-card span.emoji {
+    font-size: 2.5em;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.selection-card p {
+    font-size: 0.9em;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.selection-message {
+    text-align: center;
+    font-style: italic;
+    color: var(--light-text-color);
+    margin-top: 10px;
+}
+
+/* --- 플레이리스트 생성 버튼 영역 --- */
+.action-area {
+    text-align: center;
+    padding: 40px 0 80px;
+}
+
+.primary-action-btn {
+    font-size: 1.2em;
+    padding: 15px 30px;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, opacity 0.3s;
+}
+
+.primary-action-btn:hover:not(:disabled) {
+    background-color: #4C7043;
+}
+
+.primary-action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* --- 모달 스타일 (이전과 동일하게 유지) --- */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--modal-bg);
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--background-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* (나머지 모달/폼 스타일은 이전 main.css와 동일) */
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+form input[type="text"],
+form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    transition: border-color 0.3s;
+    font-size: 1em;
+}
+
+form input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+form button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 1.1em;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button[type="submit"]:hover {
+    background-color: #4C7043;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: var(--primary-color);
+}
+
+.message {
+    text-align: center;
+    margin-top: 15px;
+    color: crimson;
+    font-weight: 400;
+}

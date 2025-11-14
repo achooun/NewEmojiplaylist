@@ -1,0 +1,180 @@
+/* list.css */
+
+/* main.css의 스타일을 상속받으므로, 여기서는 추가/재정의만 합니다. */
+
+.container {
+    padding-top: 20px;
+}
+
+/* --- 선택된 키워드 표시 영역 --- */
+.selection-display {
+    padding: 30px 0;
+    text-align: center;
+}
+
+.selection-display h2 {
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 25px;
+}
+
+.keyword-chips {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.chip {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 50px; /* 동그란 카드 형태 */
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-weight: 700;
+    font-size: 1.1em;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chip .emoji-icon {
+    font-size: 1.5em;
+    margin-right: 8px;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: #eee;
+    margin: 40px 0;
+}
+
+/* --- 유튜브 영상 리스트 영역 --- */
+.video-list-section {
+    padding-bottom: 80px;
+}
+
+#list-header {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.video-list-grid {
+    display: grid;
+    /* 3열 레이아웃, 반응형 고려 */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+/* 비디오 카드 스타일 */
+.video-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.thumbnail-area {
+    position: relative;
+    width: 100%;
+    /* 16:9 비율 유지 */
+    padding-top: 56.25%; 
+    overflow: hidden;
+}
+
+.thumbnail-area img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-info {
+    padding: 15px;
+}
+
+.video-info h3 {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    /* 2줄로 제한 */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    height: 2.8em;
+}
+
+.video-info p {
+    font-size: 0.9em;
+    color: var(--light-text-color);
+}
+
+.video-info a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+/* 좋아요 버튼 */
+.like-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    transition: background-color 0.2s;
+}
+
+.like-btn .material-icons {
+    font-size: 24px;
+    color: #999;
+    transition: color 0.2s;
+}
+
+.like-btn:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.like-btn.liked .material-icons {
+    color: crimson; /* 좋아요 눌렀을 때 색상 */
+}
+
+/* 로딩 및 에러 메시지 */
+.loading, .error-msg {
+    text-align: center;
+    padding: 50px 0;
+    font-size: 1.2em;
+    color: var(--light-text-color);
+}
+
+.loading {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}

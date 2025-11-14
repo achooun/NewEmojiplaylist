@@ -1,0 +1,14 @@
+# Dependencies
+/node_modules
+
+# Build artifacts
+/dist
+/npm-debug.log
+
+# IDE specific files
+.vscode/
+
+# Project files and sensitive data
+users.json
+posts.json
+*.env

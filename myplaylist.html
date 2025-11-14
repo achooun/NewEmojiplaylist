@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Play - MyList</title>
+    <link rel="stylesheet" href="main.css"> 
+    <link rel="stylesheet" href="myplaylist.css"> <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="nav-left">
+            <div class="logo-image">
+                <img src="./image/logo.png" alt="Emoji Playlist 로고" width="30" height="30">
+            </div>
+            <a href="main.html" class="nav-title">Emoji Playlist</a>
+            <a href="#" id="emotion-diary-link" class="nav-link">Emotion diary</a>
+        </div>
+        <div class="nav-right">
+            <button id="auth-btn" class="nav-button primary">로그인 / 회원가입</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <section class="my-list-header">
+            <h1 id="user-greeting">My Playlist</h1>
+            <p>나만의 감정 플레이리스트를 확인하세요.</p>
+        </section>
+
+        <section class="playlist-list-section">
+            <div id="playlist-container" class="playlist-grid">
+                <p id="loading-message">플레이리스트를 불러오는 중...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="main.js"></script> 
+    <script src="myplaylist.js"></script>
+</body>
+</html>

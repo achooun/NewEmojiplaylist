@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Playlist - 감정 플레이리스트</title>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav id="navbar">
+    <div class="nav-left">
+        <div class="logo-image">
+            <img src="./image/logo.png" alt="Emoji Playlist 로고" width="30" height="30">
+            </div>
+        <a href="#" class="nav-title">Emoji Playlist</a>
+        <a href="#" id="emotion-diary-link" class="nav-link">Emotion diary</a>
+    </div>
+    <div class="nav-right">
+        <button id="auth-btn" class="nav-button">로그인</button>
+    </div>
+</nav>
+
+    <main class="container">
+        <section class="hero-section">
+            <p class="tagline">당신의 감정에 맞춘 음악 큐레이션</p>
+            <h1>
+                오늘의 <span class="highlight">기분</span>을
+                <br>
+                음악으로 채워보세요
+            </h1>
+            <p class="subtitle" id="main-greeting">로그인하고 이모지를 선택해 나만의 플레이리스트를 만드세요.</p>
+        </section>
+
+        <section class="selection-section" id="emoji-selection-section">
+            <h2>✨ 이모지로 오늘의 감정을 선택하세요</h2>
+            <div class="card-grid" id="emoji-grid">
+                </div>
+            <p class="selection-message" id="selected-emoji-message">선택된 감정: 없음</p>
+        </section>
+
+        <section class="selection-section" id="genre-selection-section">
+            <h2>🎧 원하는 장르를 선택하세요</h2>
+            <div class="card-grid" id="genre-grid">
+                </div>
+            <p class="selection-message" id="selected-genre-message">선택된 장르: 없음</p>
+        </section>
+
+        <div class="action-area">
+            <button id="create-playlist-btn" class="primary-action-btn" disabled>
+                🚀 이모지 + 장르 플레이리스트 생성하기
+            </button>
+        </div>
+
+    </main>
+    
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            
+            <div id="login-form-container">
+                <h2>로그인</h2>
+                <form id="login-form">
+                    <input type="text" id="login-username" placeholder="아이디" required>
+                    <input type="password" id="login-password" placeholder="비밀번호" required>
+                    <button type="submit">로그인</button>
+                </form>
+                <p>계정이 없으신가요? <a href="#" id="show-register">회원가입</a></p>
+            </div>
+            
+            <div id="register-form-container" style="display:none;">
+                <h2>회원가입</h2>
+                <form id="register-form">
+                    <input type="text" id="register-username" placeholder="아이디 (4~12자)" required>
+                    <input type="password" id="register-password" placeholder="비밀번호 (6자 이상)" required>
+                    <input type="password" id="register-confirm-password" placeholder="비밀번호 확인" required>
+                    <button type="submit">가입하기</button>
+                </form>
+                <p>이미 계정이 있으신가요? <a href="#" id="show-login">로그인</a></p>
+            </div>
+
+            <p id="auth-message" class="message"></p>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
