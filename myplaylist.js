@@ -1,4 +1,4 @@
-// myplaylist.js
+// myplaylist.js (수정된 전체 코드)
 
 const MyPlaylistModule = (function() {
     const API_BASE_URL = 'http://localhost:3000/api';
@@ -77,6 +77,12 @@ const MyPlaylistModule = (function() {
             
             // 영상 재생 URL (play.html로 이동)
             const playUrl = `play.html?videoId=${item.videoId}&emoji=${item.emojiKey}&genre=${item.genreKey}`;
+            
+            // 🚀 [수정 핵심 1] 버튼에 필요한 모든 데이터를 인코딩하여 data 속성으로 추가
+            const encodedTitle = encodeURIComponent(item.title);
+            const encodedThumbnail = encodeURIComponent(item.thumbnail);
+            const encodedChannelTitle = encodeURIComponent(item.channelTitle || '미확인');
+
 
             const cardHTML = `
                 <div class="playlist-card-wrapper">
@@ -95,7 +101,13 @@ const MyPlaylistModule = (function() {
                             </div>
                         </div>
                     </a>
-                    <button class="share-button" data-video-id="${item.videoId}" data-emoji="${item.emojiKey}" data-genre="${item.genreKey}">
+                    <button class="share-button" 
+                            data-video-id="${item.videoId}" 
+                            data-emoji="${item.emojiKey}" 
+                            data-genre="${item.genreKey}"
+                            data-title="${encodedTitle}"
+                            data-thumbnail="${encodedThumbnail}"
+                            data-channel-title="${encodedChannelTitle}">
                         감정 공유하기
                     </button>
                 </div>
@@ -111,16 +123,29 @@ const MyPlaylistModule = (function() {
     
     /**
      * @private
-     * 감정 공유하기 버튼 클릭 핸들러 (4번 커뮤니티 기능 연동)
+     * 감정 공유하기 버튼 클릭 핸들러 (emotion_diary.html로 이동)
      */
     const handleShareButtonClick = (e) => {
         const button = e.currentTarget;
+        
         const videoId = button.dataset.videoId;
         const emoji = button.dataset.emoji;
         const genre = button.dataset.genre;
         
-        // TODO: 4번 기능 구현 시 커뮤니티 페이지로 이동 및 데이터 전달
-        alert(`커뮤니티(Emotion Diary)로 이동합니다.\n공유할 영상 ID: ${videoId}, 감정: ${emoji}, 장르: ${genre} (미구현)`);
+        // 🚀 [수정 핵심 2] 인코딩된 제목, 썸네일, 채널명 데이터를 가져와 디코딩합니다.
+        const title = decodeURIComponent(button.dataset.title);
+        const thumbnail = decodeURIComponent(button.dataset.thumbnail);
+        const channelTitle = decodeURIComponent(button.dataset.channelTitle);
+        
+        // 쿼리 파라미터에 모든 정보를 담아 emotion_diary.html로 이동
+        const url = `EmotionDiary.html?videoId=${videoId}` +
+                    `&emoji=${emoji}` +
+                    `&genre=${genre}` +
+                    `&title=${encodeURIComponent(title)}` +
+                    `&thumbnail=${encodeURIComponent(thumbnail)}` +
+                    `&channelTitle=${encodeURIComponent(channelTitle)}`;
+        
+        window.location.href = url;
     };
 
     const publicApi = {

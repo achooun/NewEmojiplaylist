@@ -171,6 +171,98 @@ app.post('/api/playlist/toggle', authenticateUser, (req, res) => {
     });
 });
 
+// 4. 익명 커뮤니티 게시글 데이터 관리
+const POSTS_FILE = 'posts.json';
+let communityPosts = []; 
+
+function loadCommunityPosts() {
+    try {
+        const data = fs.readFileSync(POSTS_FILE);
+        communityPosts = JSON.parse(data);
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            console.log('Community posts file not found. Creating a new one.');
+            communityPosts = []; 
+            saveCommunityPosts();
+        } else {
+            console.error('Error loading community posts:', error);
+        }
+    }
+}
+
+function saveCommunityPosts() {
+    try {
+        fs.writeFileSync(POSTS_FILE, JSON.stringify(communityPosts, null, 2));
+    } catch (error) {
+        console.error('Error saving community posts:', error);
+    }
+}
+
+// =======================================================
+// 5. 익명 커뮤니티 (게시판) API
+// =======================================================
+
+// 1. 게시글 작성 API
+app.post('/api/community/post', (req, res) => {
+    // 로그인 여부만 확인 (Authorization 헤더로 확인)
+    if (!req.header('Authorization')) {
+        return res.status(401).send({ success: false, message: '로그인 후 이용 가능합니다.' });
+    }
+    
+    const { videoId, title, thumbnail, emojiKey, genreKey, channelTitle, content } = req.body;
+
+    if (!content || !videoId) {
+        return res.status(400).send({ success: false, message: '일기 내용과 영상 정보는 필수입니다.' });
+    }
+
+    const newPost = {
+        id: Date.now(), 
+        videoId,
+        title,
+        thumbnail,
+        emojiKey,
+        genreKey,
+        channelTitle,
+        content,
+        timestamp: new Date().toISOString(),
+        authorId: req.header('Authorization'), // 작성자 식별자 (실제 표시될 때는 '익명' 처리)
+        anonymousName: `익명${Math.floor(Math.random() * 900) + 100}` // 익명 이름 생성
+    };
+    
+    communityPosts.push(newPost);
+    saveCommunityPosts();
+
+    res.send({ 
+        success: true, 
+        message: '게시글이 성공적으로 작성되었습니다.',
+        post: newPost
+    });
+});
+
+// 2. 게시글 전체 조회 API (최신순)
+app.get('/api/community/posts', (req, res) => {
+    // 최신 글이 위에 오도록 내림차순 정렬
+    const sortedPosts = communityPosts.slice().sort((a, b) => b.id - a.id);
+    
+    // 민감 정보(authorId)는 제거하고 익명 이름으로 대체하여 반환
+    const sanitizedPosts = sortedPosts.map(post => ({
+        ...post,
+        authorId: undefined, // 실제 ID 삭제
+        author: post.anonymousName // 익명 이름 사용
+    }));
+
+    res.send({
+        success: true,
+        posts: sanitizedPosts 
+    });
+});
+
+
+
+
+// 서버 시작 시 호출되는 곳에 추가 (app.listen 위에)
+loadCommunityPosts();
+
 
 // 서버 시작
 app.listen(PORT, () => {

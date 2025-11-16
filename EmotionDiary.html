@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Diary - 익명 커뮤니티</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="main.css"> 
+    <link rel="stylesheet" href="EmotionDiary.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Nav 바 (main.js가 상태 관리) -->
+    <nav id="navbar">
+        <div class="nav-left">
+            <div class="logo-image">
+                <img src="./image/logo.png" alt="Emoji Playlist 로고" width="30" height="30">
+            </div>
+            <a href="main.html" class="nav-title">Emoji Playlist</a>
+            <a href="#" id="emotion-diary-link" class="nav-link">Emotion diary</a>
+        </div>
+        <div class="nav-right">
+            <button id="auth-btn" class="nav-button primary">로그인</button>
+        </div>
+    </nav>
+
+    <main class="container diary-container">
+        
+        <section class="community-header">
+            <h1>익명 감정 기록 및 공유</h1>
+            <p>당신의 감정 플레이리스트를 공유하고 익명으로 감상을 나누세요.</p>
+        </section>
+
+        <!-- 🚀 1. 일기 작성 폼 및 공유 영상 정보 카드 -->
+        <section class="post-creation-area">
+            <h2>나의 감상 기록하기</h2>
+            
+            <!-- 공유할 영상 정보 카드 (가로로 긴 형식) -->
+            <div id="shared-video-card" class="shared-video-card">
+                <!-- JS에서 영상 정보가 여기에 로드됩니다. -->
+                <p id="video-info-message">플레이리스트에서 공유할 영상을 선택해주세요.</p>
+            </div>
+            
+            <form id="post-form">
+                <textarea id="diary-content" placeholder="오늘의 감상을 익명으로 자유롭게 기록하세요." required></textarea>
+                <button type="submit" id="submit-post-btn" class="nav-button primary">감상 기록 및 공유</button>
+            </form>
+        </section>
+        
+        <hr class="divider">
+
+        <!-- 🚀 2. 다른 사람들의 게시물 리스트 -->
+        <section class="post-list-area">
+            <h2>다른 사람들의 감정 공유 히스토리</h2>
+            <div id="posts-container" class="posts-list-grid">
+                <!-- 게시글 목록이 여기에 렌더링됩니다. (최신순) -->
+                <p id="loading-posts">게시물을 불러오는 중...</p>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- AuthModule 초기화를 위해 main.js를 로드합니다. -->
+    <script src="main.js"></script>
+    <script src="EmotionDiary.js"></script>
+</body>
+</html>
