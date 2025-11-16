@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         diaryContent: document.getElementById('diary-content'),
         submitBtn: document.getElementById('submit-post-btn'),
         postsContainer: document.getElementById('posts-container'),
+        creationArea: document.querySelector('.post-creation-area'),
         loadingMsg: document.getElementById('loading-posts'),
         main: document.querySelector('main')
     };
@@ -40,6 +41,22 @@ document.addEventListener('DOMContentLoaded', () => {
         sharedVideo.emojiKey = urlParams.get('emoji');
         sharedVideo.genreKey = urlParams.get('genre');
         sharedVideo.channelTitle = urlParams.get('channelTitle'); // 플레이 페이지에서 전달 가정
+
+        if (!sharedVideo.videoId) {
+            // 🚀 [핵심] videoId가 없을 때 작성 폼 숨기기
+            if (elements.creationArea) {
+                elements.creationArea.style.display = 'none'; 
+            }
+            // 목록 조회 기능만 실행
+            // 다른 로직은 실행하지 않음 (fetchPosts()는 init에서 이미 호출됨)
+            
+            // 사용자에게 안내
+            const header = document.querySelector('.community-header h1');
+            if (header) {
+                header.textContent = '익명 커뮤니티 게시판';
+            }
+            return;
+        }
         
         renderSharedVideoCard();
     };

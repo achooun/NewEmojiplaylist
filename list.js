@@ -9,6 +9,8 @@ const YouTubeModule = (function() {
     // ⚠️ 사용자님의 YouTube Data API 키를 여기에 입력해주세요!
     const API_KEY = 'AIzaSyCGDl-2-k-LLr89YGfYDTb15Ed6J5yECJA'; 
     const API_URL = 'https://www.googleapis.com/youtube/v3/search';
+
+    const RANDOM_REGIONS = ['US', 'GB', 'CA', 'AU', 'DE', 'FR', 'JP', 'BR', 'KR'];
     
     // 이모지 및 장르 데이터 (main.js와 일관성 유지를 위해 list.js에도 정의)
     const EMOJIS_MAP = {
@@ -89,6 +91,17 @@ const YouTubeModule = (function() {
         }
     };
 
+    const getRandomRegion = () => {
+        const randomIndex = Math.floor(Math.random() * RANDOM_REGIONS.length);
+        return RANDOM_REGIONS[randomIndex];
+    };
+    
+    const getRandomOrder = () => {
+        const orders = ['relevance', 'rating', 'viewCount', 'date'];
+        const randomIndex = Math.floor(Math.random() * orders.length);
+        return orders[randomIndex];
+    };
+
     /**
      * @private
      * YouTube API를 호출하여 영상을 검색합니다. (키워드 필터링 알고리즘)
@@ -105,6 +118,10 @@ const YouTubeModule = (function() {
             return [];
         }
 
+        const randomRegion = getRandomRegion();
+        const randomOrder = getRandomOrder();
+        console.log(`[YouTube API] Searching with region: ${randomRegion}, order: ${randomOrder}`);
+
         // YouTube 검색 API 파라미터 구성
         const params = new URLSearchParams({
             part: 'snippet',
@@ -113,7 +130,9 @@ const YouTubeModule = (function() {
             videoDimension: '2d', // 2D 영상만
             maxResults: 12,      // 최대 12개 결과
             videoCategoryId: '10', // 음악 (Music) 카테고리 필터링
-            key: API_KEY
+            key: API_KEY,
+            order: randomOrder,
+            regionCode: randomRegion
         });
 
         try {
@@ -154,9 +173,6 @@ const renderVideoList = (items) => {
             const title = item.snippet.title;
             const channelTitle = item.snippet.channelTitle;
             const thumbnailUrl = item.snippet.thumbnails.high.url;
-            
-            // 🚀 [핵심 수정 부분] 'play.html'로 이동하는 URL 생성
-            // 선택된 영상 ID와 현재 감정/장르 키를 쿼리 파라미터로 전달합니다.
             const playUrl = `play.html?videoId=${videoId}&emoji=${selectedMood.emojiKey}&genre=${selectedMood.genreKey}`;
 
             const cardHTML = `
@@ -170,18 +186,11 @@ const renderVideoList = (items) => {
                             <p>${channelTitle}</p>
                         </div>
                     </a>
-                    <button class="like-btn" data-video-id="${videoId}" data-title="${title}" data-thumbnail="${thumbnailUrl}">
-                        <span class="material-icons">favorite_border</span>
-                    </button>
                 </div>
             `;
             elements.videoListContainer.innerHTML += cardHTML;
         });
 
-        // 좋아요 버튼 이벤트 리스너 추가 (추후 구현)
-        document.querySelectorAll('.like-btn').forEach(button => {
-            button.addEventListener('click', handleLikeButtonClick);
-        });
     };
     
     /**
@@ -218,11 +227,6 @@ const renderVideoList = (items) => {
     // 외부로 노출할 Public API
     const publicApi = {
         init: async () => {
-            // 네비게이션 버튼을 '메인으로' 고정
-            elements.navRight.innerHTML = `<button id="back-to-main" class="nav-button primary">메인으로</button>`;
-            document.getElementById('back-to-main').addEventListener('click', () => {
-                window.location.href = 'main.html';
-            });
             
             // 쿼리 파라미터 추출 및 유효성 검사
             if (!getQueryParameters()) return; 

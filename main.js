@@ -173,47 +173,48 @@ const AuthModule = (function() {
     // main.js - AuthModule 내부
 
     /**
-     * @private
-     * 이벤트 리스너를 설정합니다. (DOM 요소 존재 시에만 등록하도록 수정)
-     */
-    const setupEventListeners = () => {
-        
-        // 닫기 버튼, 배경 클릭 리스너 (모달이 있는 페이지에서만 유효)
-        if (elements.closeBtn) {
-            elements.closeBtn.addEventListener('click', publicApi.closeModal);
-        }
-        if (elements.modal) {
-            window.addEventListener('click', (e) => {
-                if (e.target === elements.modal) {
-                    publicApi.closeModal();
-                }
-            });
-        }
-        
-        // 폼 관련 요소는 main.html의 모달에만 있으므로, 요소가 존재할 때만 리스너 등록
-        if (elements.registerForm && elements.loginForm) {
-            // 폼 전환 링크
-            elements.showRegisterLink.addEventListener('click', (e) => { e.preventDefault(); showForm('register'); });
-            elements.showLoginLink.addEventListener('click', (e) => { e.preventDefault(); showForm('login'); });
+     * @private
+     * 이벤트 리스너를 설정합니다. (Nav 버튼 이벤트는 updateUI가 전담)
+     */
+    const setupEventListeners = () => {
+        
+        // 닫기 버튼, 배경 클릭 리스너 (모달이 있는 페이지에서만 유효)
+        if (elements.closeBtn) {
+            elements.closeBtn.addEventListener('click', publicApi.closeModal);
+        }
+        if (elements.modal) {
+            window.addEventListener('click', (e) => {
+                if (e.target === elements.modal) {
+                    publicApi.closeModal();
+                }
+            });
+        }
+        
+        // 폼 관련 요소는 main.html의 모달에만 있으므로, 요소가 존재할 때만 리스너 등록
+        if (elements.registerForm && elements.loginForm) {
+            // 폼 전환 링크
+            elements.showRegisterLink.addEventListener('click', (e) => { e.preventDefault(); showForm('register'); });
+            elements.showLoginLink.addEventListener('click', (e) => { e.preventDefault(); showForm('login'); });
 
-            // 폼 제출 핸들러
-            elements.registerForm.addEventListener('submit', handleRegister);
-            elements.loginForm.addEventListener('submit', handleLogin);
-        }
+            // 폼 제출 핸들러
+            elements.registerForm.addEventListener('submit', handleRegister);
+            elements.loginForm.addEventListener('submit', handleLogin);
+        }
 
-        // Emotion diary 링크 (Nav 바에 항상 있으므로 유지)
-        document.getElementById('emotion-diary-link').addEventListener('click', (e) => {
-             e.preventDefault();
-             // Nav 바가 모든 페이지에 있다고 가정
-             if (currentUser || sessionStorage.getItem('currentMoodUser')) {
-                 alert('Emotion diary 페이지로 이동 (미구현)');
-             } else {
-                 alert('로그인이 필요합니다.');
-                 // 로그인 버튼을 눌러 모달 열기 시도
-                 if (publicApi.openModal) publicApi.openModal('login');
-             }
-        });
-    };
+        // Emotion diary 링크 (Nav 바에 항상 있으므로 유지)
+        document.getElementById('emotion-diary-link').addEventListener('click', (e) => {
+             e.preventDefault();
+             // Nav 바가 모든 페이지에 있다고 가정
+             if (currentUser || sessionStorage.getItem('currentMoodUser')) {
+                 // TODO: emotion_diary.html로 이동
+                window.location.href = 'EmotionDiary.html'; 
+             } else {
+                 alert('로그인이 필요합니다.');
+                 // 로그인 버튼을 눌러 모달 열기 시도
+                 if (publicApi.openModal) publicApi.openModal('login');
+             }
+        });
+    };
 
     const checkSession = () => {
         const sessionUser = sessionStorage.getItem('currentMoodUser');
@@ -225,6 +226,7 @@ const AuthModule = (function() {
 
     const publicApi = {
         init: () => {
+            publicApi.closeModal(); 
             setupEventListeners();
             checkSession();
         },
@@ -233,8 +235,11 @@ const AuthModule = (function() {
             elements.modal.style.display = 'flex';
         },
         closeModal: () => {
+        // [안정성 강화] elements.modal이 존재할 때만 style을 조작
+        if (elements.modal) { 
             elements.modal.style.display = 'none';
-        },
+        }
+    },
         logout: () => {
             currentUser = null;
             sessionStorage.removeItem('currentMoodUser');

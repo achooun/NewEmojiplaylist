@@ -291,24 +291,56 @@ const YouTubeModule = (function() {
         });
     };
 
+    /**
+     * @private
+     * 🚀 [추가] 감정 기록하기 버튼 클릭 핸들러
+     */
+    const handleDiaryButtonClick = () => {
+        const user = window.AuthModule ? window.AuthModule.getCurrentUser() : null;
+        
+        if (!user) {
+            alert('로그인해야 감정 일기를 기록할 수 있습니다.');
+            if (window.AuthModule) window.AuthModule.openModal();
+            return;
+        }
+        
+        // videoData가 로드되었는지 확인
+        if (!videoData || !videoData.snippet) {
+            alert('영상의 상세 정보가 완전히 로드된 후 시도해주세요.');
+            return;
+        }
+        
+        const snippet = videoData.snippet;
+        
+        // 모든 정보를 쿼리 파라미터로 인코딩하여 전달
+        const url = `EmotionDiary.html?videoId=${currentVideoId}` +
+                    `&emoji=${currentMood.emoji}` +
+                    `&genre=${currentMood.genre}` +
+                    `&title=${encodeURIComponent(snippet.title)}` +
+                    `&thumbnail=${encodeURIComponent(snippet.thumbnails.high.url)}` +
+                    `&channelTitle=${encodeURIComponent(snippet.channelTitle)}`;
 
+        window.location.href = url;
+    };
+
+
+    // 외부로 노출할 Public API
     const publicApi = {
         init: async () => {
             if (!getQueryParameters()) return;
             
             elements.likeBtn.addEventListener('click', handleLikeButtonClick);
             
-            elements.diaryBtn.addEventListener('click', () => {
-                alert(`Emotion Diary 페이지에서 현재 감정(${EMOJIS_MAP[currentMood.emoji].name})과 함께 일기를 작성할 수 있습니다. (미구현)`);
-            });
+            // 🚀 [수정] 기존 alert 대신 실제 함수 연결
+            elements.diaryBtn.addEventListener('click', handleDiaryButtonClick); 
 
             // 1. 선택된 키워드 표시
             renderMoodChips();
 
             // 2. YouTube 플레이어 준비
-            initYouTubePlayer(); // ⚠️ onYouTubeIframeAPIReady는 여기서 설정만 하고, YouTube API 스크립트 로드 완료 시 자동으로 호출됨.
+            initYouTubePlayer();
 
-            // 3. 영상 상세 정보 및 해시태그 로드 (플레이어 로드와 병렬 진행)
+            // 3. 영상 상세 정보 및 해시태그 로드
             await fetchVideoDetails(currentVideoId);
             
             // 4. 추천 영상 리스트 로드
