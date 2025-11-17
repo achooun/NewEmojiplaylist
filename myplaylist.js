@@ -1,7 +1,7 @@
 // myplaylist.js (수정된 전체 코드)
 
 const MyPlaylistModule = (function() {
-    const API_BASE_URL = 'http://localhost:3000/api';
+    //const API_BASE_URL = 'http://localhost:3000/api';
 
     // 이모지 및 장르 데이터 (표시용)
     const EMOJIS_MAP = { 'happy': '😊 행복', 'calm': '😌 평온', 'sad': '😢 슬픔', 'angry': '😡 분노', 'excited': '🤩 신남', 'tired': '😴 피곤' };
@@ -15,10 +15,14 @@ const MyPlaylistModule = (function() {
     
     // (main.js의 AuthModule이 window.AuthModule로 로드되어 있다고 가정)
     const getAuthHeader = () => {
-        const user = window.AuthModule && window.AuthModule.getCurrentUser();
-        // 헤더에 사용자 이름을 담아 보냅니다. (서버의 authenticateUser 미들웨어와 연동)
-        return user ? user.username : null; 
-    };
+        const sessionUser = sessionStorage.getItem('currentMoodUser');
+        if (sessionUser) {
+            const user = JSON.parse(sessionUser);
+            // 헤더에 사용자 이름을 담아 보냅니다. (서버의 authenticateUser 미들웨어와 연동)
+            return user.username; 
+        }
+        return null;
+    };
 
     /**
      * @private
@@ -36,7 +40,7 @@ const MyPlaylistModule = (function() {
         elements.greeting.textContent = `${username}님의 My Playlist`;
 
         try {
-            const response = await fetch(`${API_BASE_URL}/playlist`, {
+            const response = await fetch(`/api/playlist`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -149,28 +153,26 @@ const MyPlaylistModule = (function() {
     };
 
     const publicApi = {
-        init: async () => {
-            // MyPlaylist 페이지 진입 시 로그인 체크
-            if (!window.AuthModule || !window.AuthModule.getCurrentUser()) {
-                alert('My Playlist에 접근하려면 로그인이 필요합니다.');
-                window.location.href = 'main.html';
-                return;
-            }
+        init: async () => {
+            // 💡 [수정] 바로 사용자 이름 확인을 시도합니다.
+            const username = getAuthHeader(); // 수정된 함수 호출
 
-            const playlist = await fetchPlaylist();
-            renderPlaylist(playlist);
-        }
-    };
+            if (!username) {
+                alert('My Playlist에 접근하려면 로그인이 필요합니다.');
+                window.location.href = 'main.html';
+                return;
+            }
+
+            const playlist = await fetchPlaylist();
+            renderPlaylist(playlist);
+        }
+    };
 
     return publicApi;
 })();
 
-// DOMContentLoaded는 main.js에서 AuthModule 초기화 후 실행되는 것을 기대합니다.
-// myplaylist.html의 <script> 태그 순서를 확인하세요.
+
 document.addEventListener('DOMContentLoaded', () => {
-    // main.js의 AuthModule이 초기화된 후에 MyPlaylistModule을 초기화
-    setTimeout(() => { 
-        MyPlaylistModule.init(); 
-    }, 100); // 아주 짧은 딜레이로 AuthModule 로드를 확보
-    console.log('MyPlaylist Page Loaded.');
+    MyPlaylistModule.init(); 
+    console.log('MyPlaylist Page Loaded.');
 });

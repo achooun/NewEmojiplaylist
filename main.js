@@ -5,7 +5,7 @@
  * =======================================================
  */
 const AuthModule = (function() {
-    const API_BASE_URL = 'http://localhost:3000/api';
+    //const API_BASE_URL = 'http://localhost:3000/api';
     
     // DOM 요소 캐시 (AuthModule)
     const elements = {
@@ -108,7 +108,7 @@ const AuthModule = (function() {
         }
 
         try {
-            const response = await fetch(`${API_BASE_URL}/register`, {
+            const response = await fetch(`/api/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -135,7 +135,7 @@ const AuthModule = (function() {
         const password = elements.loginForm.elements['login-password'].value;
 
         try {
-            const response = await fetch(`${API_BASE_URL}/login`, {
+            const response = await fetch(`/api/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })

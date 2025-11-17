@@ -6,7 +6,7 @@ const YouTubeModule = (function() {
     const VIDEO_API_URL = 'https://www.googleapis.com/youtube/v3/videos';
     const SEARCH_API_URL = 'https://www.googleapis.com/youtube/v3/search';
 
-    const API_BASE_URL = 'http://localhost:3000/api';
+    //const API_BASE_URL = 'http://localhost:3000/api';
 
     // 이모지 및 장르 데이터 (일관성 유지를 위해 재정의)
     const EMOJIS_MAP = { 'happy': { emoji: '😊', name: '행복' }, 'calm': { emoji: '😌', name: '평온' }, 'sad': { emoji: '😢', name: '슬픔' }, 'angry': { emoji: '😡', name: '분노' }, 'excited': { emoji: '🤩', name: '신남' }, 'tired': { emoji: '😴', name: '피곤' } };
@@ -187,7 +187,7 @@ const YouTubeModule = (function() {
 
         // 2. 서버 통신 (MyPlaylist 토글 API)
         try {
-            const response = await fetch(`${API_BASE_URL}/playlist/toggle`, {
+            const response = await fetch(`/api/playlist/toggle`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',

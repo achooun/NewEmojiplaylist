@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     // API 기본 URL
-    const API_BASE_URL = 'http://localhost:3000/api'; 
+    //const API_BASE_URL = 'http://localhost:3000/api'; 
     
     // 현재 로그인 사용자 및 공유할 영상 정보
     let currentUser = window.AuthModule ? window.AuthModule.getCurrentUser() : null;
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.loadingMsg.style.display = 'block';
         
         try {
-            const response = await fetch(`${API_BASE_URL}/community/posts`);
+            const response = await fetch(`/api/community/posts`);
             const data = await response.json();
 
             if (data.success) {
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch(`${API_BASE_URL}/community/post`, {
+            const response = await fetch(`/api/community/post`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
