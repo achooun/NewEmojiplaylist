@@ -56,10 +56,19 @@ const AuthModule = (function() {
             myListBtn.className = 'nav-button';
             myListBtn.textContent = 'MyList';
             myListBtn.addEventListener('click', () => { 
-                // TODO: MyPlaylist 페이지로 이동 로직으로 변경
                 window.location.href = 'myplaylist.html'; 
             });
             elements.navRight.appendChild(myListBtn);
+
+            // 감정 분석 버튼 생성
+            const chartBtn = document.createElement('button');
+            chartBtn.id = 'chart-btn';
+            chartBtn.className = 'nav-button';
+            chartBtn.textContent = '감정 분석';
+            chartBtn.addEventListener('click', () => {
+                window.location.href = 'emotion_chart.html';
+            });
+            elements.navRight.appendChild(chartBtn);
 
             // 로그아웃 버튼 생성
             const logoutBtn = document.createElement('button');
@@ -94,7 +103,6 @@ const AuthModule = (function() {
         }
     };
     
-    // (handleRegister, handleLogin, showForm, setupEventListeners, checkSession 함수는 이전 코드와 동일)
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -397,12 +405,34 @@ const SelectionModule = (function() {
         }
     };
     
-    const handleCreatePlaylist = () => { /* ... (이전 코드 유지) ... */ 
+    const handleCreatePlaylist = () => { 
         if (!selectedEmoji || !selectedGenre) {
             alert('이모지와 장르를 모두 선택해주세요.');
             return;
         }
         
+        // 서버에 선택 기록 전송 (Fire and Forget)
+        const currentUser = AuthModule.getCurrentUser();
+        if (currentUser && currentUser.username) {
+            fetch('/api/history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': currentUser.username
+                },
+                body: JSON.stringify({ emotion: selectedEmoji, genre: selectedGenre })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('선택 기록이 성공적으로 저장되었습니다.');
+                } else {
+                    console.warn('선택 기록 저장에 실패했습니다:', data.message);
+                }
+            })
+            .catch(error => console.error('선택 기록 전송 중 오류 발생:', error));
+        }
+
         const emojiData = EMOJIS.find(e => e.key === selectedEmoji);
         const genreData = GENRES.find(g => g.key === selectedGenre);
 

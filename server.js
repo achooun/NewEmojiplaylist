@@ -89,7 +89,7 @@ app.post('/api/register', (req, res) => {
         return res.status(409).json({ success: false, message: '이미 존재하는 아이디입니다.' }); 
     }
 
-    const newUser = { username: username, password: password, myPlaylist: [] };
+    const newUser = { username: username, password: password, myPlaylist: [], selectionHistory: [] };
     users.push(newUser);
     saveUsers(users);
 
@@ -111,6 +111,51 @@ app.post('/api/login', (req, res) => {
     } else {
         res.status(401).json({ success: false, message: '아이디 또는 비밀번호가 일치하지 않습니다.' }); 
     }
+});
+
+
+/**
+ * =======================================================
+ * 감정/장르 선택 기록 API
+ * =======================================================
+ */
+
+// 1. 감정/장르 선택 기록 추가
+app.post('/api/history', authenticateUser, (req, res) => {
+    const { emotion, genre } = req.body;
+    const { currentUser, allUsers, userIndex } = req;
+
+    if (!emotion || !genre) {
+        return res.status(400).json({ success: false, message: '감정과 장르 정보는 필수입니다.' });
+    }
+
+    // selectionHistory 필드가 없으면 초기화
+    if (!currentUser.selectionHistory) {
+        currentUser.selectionHistory = [];
+    }
+
+    const newSelection = {
+        emotion,
+        genre,
+        timestamp: new Date().toISOString()
+    };
+
+    currentUser.selectionHistory.push(newSelection);
+
+    allUsers[userIndex] = currentUser;
+    saveUsers(allUsers);
+
+    res.json({ success: true, message: '선택 기록이 저장되었습니다.' });
+});
+
+// 2. 감정/장르 선택 기록 조회
+app.get('/api/history', authenticateUser, (req, res) => {
+    const { currentUser } = req;
+    
+    // selectionHistory 필드가 없으면 빈 배열 반환
+    const history = currentUser.selectionHistory || [];
+    
+    res.json({ success: true, history });
 });
 
 
