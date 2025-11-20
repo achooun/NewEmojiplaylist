@@ -14,14 +14,18 @@
     <!-- Nav 바 (main.js가 상태 관리) -->
     <nav id="navbar">
         <div class="nav-left">
-            <div class="logo-image">
-                <img src="./image/logo.png" alt="Emoji Playlist 로고" width="30" height="30">
-            </div>
-            <a href="main.html" class="nav-title">Emoji Playlist</a>
-            <a href="#" id="emotion-diary-link" class="nav-link">Emotion diary</a>
+            <a href="main.html" class="logo-link">
+                <div class="logo-image">
+                    <img src="./image/logo.png" alt="Emoji Playlist 로고" width="30" height="30">
+                </div>
+                <span class="nav-title">Emoji Playlist</span>
+            </a>
         </div>
         <div class="nav-right">
-            <button id="auth-btn" class="nav-button primary">로그인</button>
+            <a href="#" id="emotion-diary-link" class="nav-link nav-menu-button">Community</a>
+            <span id="auth-buttons-container">
+                <!-- Auth buttons will be dynamically inserted here by main.js -->
+            </span>
         </div>
     </nav>
 

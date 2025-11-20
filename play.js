@@ -39,9 +39,9 @@ const YouTubeModule = (function() {
         currentMood.genre = params.get('genre');
 
         if (!currentVideoId) {
-             alert('재생할 영상 정보가 없습니다. 메인 페이지로 돌아갑니다.');
-             window.location.href = 'main.html';
-             return false;
+            alert('재생할 영상 정보가 없습니다. 메인 페이지로 돌아갑니다.');
+            window.location.href = 'main.html';
+            return false;
         }
         return true;
     };
@@ -155,20 +155,28 @@ const YouTubeModule = (function() {
         }
     };
 
-   /**
+/**
      * @private
      * 좋아요 버튼 클릭 핸들러: MyList에 영상을 추가/제거하고 서버와 통신합니다.
      */
     const handleLikeButtonClick = async () => { 
         // 1. 사전 검증 및 데이터 준비
-        const user = window.AuthModule ? window.AuthModule.getCurrentUser() : null; 
+        let user = window.AuthModule ? window.AuthModule.getCurrentUser() : null;
+        // AuthModule의 상태가 유실되었을 경우를 대비해 sessionStorage에서 직접 확인
+        if (!user) {
+            const sessionUser = sessionStorage.getItem('currentMoodUser');
+            if (sessionUser) {
+                user = JSON.parse(sessionUser);
+            }
+        }
         
         // videoData는 fetchVideoDetails 함수에서 가져온 전역 변수여야 합니다.
         const videoDetails = videoData ? videoData.snippet : {}; 
 
         if (!user || !currentVideoId || !videoDetails.title) {
-            alert('로그인해야 MyList에 추가할 수 있으며, 영상 정보가 필요합니다.');
-            if (!user && window.AuthModule) window.AuthModule.openModal();
+            alert('로그인해야 MyList에 추가할 수 있습니다.');
+            // play.html에는 로그인 모달이 없으므로, 로그인 페이지로 이동하거나 다른 처리를 제안해야 함.
+            // 여기서는 AuthModule.openModal() 호출을 제거합니다.
             return;
         }
 
@@ -343,10 +351,50 @@ const YouTubeModule = (function() {
             // 3. 영상 상세 정보 및 해시태그 로드
             await fetchVideoDetails(currentVideoId);
             
-            // 4. 추천 영상 리스트 로드
+            // 4. MyList 상태 확인
+            const myPlaylist = await fetchMyPlaylist();
+            if (myPlaylist) {
+                updateLikeButtonStatus(myPlaylist, currentVideoId);
+            }
+
+            // 5. 추천 영상 리스트 로드
             await fetchRecommendations();
             
             console.log('Play Page Loaded.');
+        }
+    };
+
+    // 추가된 함수: MyPlaylist 정보 가져오기
+    const fetchMyPlaylist = async () => {
+        const sessionUser = sessionStorage.getItem('currentMoodUser');
+        if (!sessionUser) return null;
+        
+        const user = JSON.parse(sessionUser);
+        const username = user.username;
+
+        try {
+            const response = await fetch(`/api/playlist`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': username
+                }
+            });
+            const data = await response.json();
+            return data.success ? data.playlist : null;
+        } catch (error) {
+            console.error('MyPlaylist Fetch Error:', error);
+            return null;
+        }
+    };
+
+    // 추가된 함수: 좋아요 버튼 상태 업데이트
+    const updateLikeButtonStatus = (playlist, videoId) => {
+        const isLiked = playlist.some(item => item.videoId === videoId);
+        if (isLiked) {
+            elements.likeBtn.classList.add('liked');
+            elements.likeBtn.querySelector('.material-icons').textContent = 'favorite';
+            elements.likeBtn.querySelector('span:last-child').textContent = 'MyList에 저장됨';
         }
     };
 

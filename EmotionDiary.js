@@ -116,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="post-video-details">
                             <h4>${post.title}</h4>
+                            <p>채널: ${post.channelTitle || '정보 없음'}</p>
                             <div class="card-tags">
                                 <span class="tag-chip tag-emoji">${emojiTag}</span>
                                 <span class="tag-chip tag-genre">${post.genreKey}</span>

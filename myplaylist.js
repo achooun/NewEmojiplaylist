@@ -105,15 +105,18 @@ const MyPlaylistModule = (function() {
                             </div>
                         </div>
                     </a>
-                    <button class="share-button" 
-                            data-video-id="${item.videoId}" 
-                            data-emoji="${item.emojiKey}" 
-                            data-genre="${item.genreKey}"
-                            data-title="${encodedTitle}"
-                            data-thumbnail="${encodedThumbnail}"
-                            data-channel-title="${encodedChannelTitle}">
-                        감정 공유하기
-                    </button>
+                    <div class="playlist-actions">
+                        <button class="share-button" 
+                                data-video-id="${item.videoId}" 
+                                data-emoji="${item.emojiKey}" 
+                                data-genre="${item.genreKey}"
+                                data-title="${encodedTitle}"
+                                data-thumbnail="${encodedThumbnail}"
+                                data-channel-title="${encodedChannelTitle}">
+                            감정 공유하기
+                        </button>
+                        <button class="delete-button" data-video-id="${item.videoId}">삭제</button>
+                    </div>
                 </div>
             `;
             elements.container.innerHTML += cardHTML;
@@ -122,6 +125,11 @@ const MyPlaylistModule = (function() {
         // 감정 공유하기 버튼 이벤트 리스너 추가
         document.querySelectorAll('.share-button').forEach(button => {
             button.addEventListener('click', handleShareButtonClick);
+        });
+
+        // 삭제 버튼 이벤트 리스너 추가
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', handleDeleteButtonClick);
         });
     };
     
@@ -150,6 +158,51 @@ const MyPlaylistModule = (function() {
                     `&channelTitle=${encodeURIComponent(channelTitle)}`;
         
         window.location.href = url;
+    };
+
+    /**
+     * @private
+     * 플레이리스트 항목 삭제 버튼 클릭 핸들러
+     */
+    const handleDeleteButtonClick = async (e) => {
+        const button = e.currentTarget;
+        const videoIdToDelete = button.dataset.videoId;
+
+        if (!confirm('정말로 이 영상을 플레이리스트에서 삭제하시겠습니까?')) {
+            return;
+        }
+
+        const username = getAuthHeader();
+        if (!username) {
+            alert('로그인이 필요합니다.');
+            window.location.href = 'main.html';
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/playlist/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': username
+                },
+                body: JSON.stringify({ videoId: videoIdToDelete })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert('영상이 플레이리스트에서 삭제되었습니다.');
+                // 플레이리스트를 새로고침하여 변경사항 반영
+                const updatedPlaylist = await fetchPlaylist();
+                renderPlaylist(updatedPlaylist);
+            } else {
+                alert(`삭제 실패: ${data.message}`);
+            }
+        } catch (error) {
+            console.error('플레이리스트 삭제 API 통신 오류:', error);
+            alert('서버와 통신하는 데 문제가 발생했습니다.');
+        }
     };
 
     const publicApi = {

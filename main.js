@@ -16,7 +16,7 @@ const AuthModule = (function() {
         showLoginLink: document.getElementById('show-login'),
         messageDisplay: document.getElementById('auth-message'),
         mainGreeting: document.getElementById('main-greeting'),
-        navRight: document.querySelector('.nav-right')
+        authButtons: document.getElementById('auth-buttons-container')
     };
 
     let currentUser = null; 
@@ -30,8 +30,8 @@ const AuthModule = (function() {
     };
 
     const updateUI = () => {
-        if (!elements.navRight) return;
-        elements.navRight.innerHTML = '';
+        if (!elements.authButtons) return;
+        elements.authButtons.innerHTML = '';
         
         if (currentUser) {
             if (elements.mainGreeting) {
@@ -39,7 +39,7 @@ const AuthModule = (function() {
             }
 
             const commonBtnClass = 'nav-button';
-            elements.navRight.innerHTML = `
+            elements.authButtons.innerHTML = `
                 <button id="my-list-btn" class="${commonBtnClass}">MyList</button>
                 <button id="chart-btn" class="${commonBtnClass}">감정 분석</button>
                 <button id="logout-btn" class="${commonBtnClass} primary">로그아웃</button>
@@ -56,8 +56,11 @@ const AuthModule = (function() {
                 elements.mainGreeting.textContent = '로그인하고 이모지를 선택해 나만의 플레이리스트를 만드세요.';
             }
             
-            elements.navRight.innerHTML = `<button id="auth-btn" class="nav-button primary">로그인</button>`;
-            document.getElementById('auth-btn').addEventListener('click', () => publicApi.openModal('login'));
+            // main.html 또는 루트 경로에서만 로그인 버튼 표시
+            if (window.location.pathname.endsWith('main.html') || window.location.pathname.endsWith('/')) {
+                elements.authButtons.innerHTML = `<button id="auth-btn" class="nav-button primary">로그인</button>`;
+                document.getElementById('auth-btn').addEventListener('click', () => publicApi.openModal('login'));
+            }
 
             if (window.SelectionModule) SelectionModule.disableSelection();
         }
@@ -293,10 +296,10 @@ const SelectionModule = (function() {
         if (!container) return; 
         container.innerHTML = data.map(item => `
             <div class="selection-card" 
-                 data-key="${item.key}" 
-                 data-name="${item.name}" 
-                 data-type="${type}"
-                 data-icon="${item.icon || item.emoji}">
+                data-key="${item.key}" 
+                data-name="${item.name}" 
+                data-type="${type}"
+                data-icon="${item.icon || item.emoji}">
                 <span class="emoji">${item.emoji || item.icon}</span>
                 <p>${item.name}</p>
             </div>`).join('');
@@ -355,7 +358,7 @@ const SelectionModule = (function() {
         if (!isLoggedIn) {
             elements.createBtn.textContent = '로그인 후 플레이리스트를 생성할 수 있습니다';
         } else {
-             elements.createBtn.textContent = '🚀 이모지 + 장르 플레이리스트 생성하기';
+            elements.createBtn.textContent = '🚀 이모지 + 장르 플레이리스트 생성하기';
         }
     };
     

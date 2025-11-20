@@ -12,14 +12,18 @@
 
     <nav id="navbar">
         <div class="nav-left">
-            <div class="logo-image">
-                <img src="./image/logo.png" alt="Emoji Playlist 로고" width="30" height="30">
-            </div>
-            <a href="main.html" class="nav-title">Emoji Playlist</a>
-            <a href="#" id="emotion-diary-link" class="nav-link">Emotion diary</a>
+            <a href="main.html" class="logo-link">
+                <div class="logo-image">
+                    <img src="./image/logo.png" alt="Emoji Playlist 로고" width="30" height="30">
+                </div>
+                <span class="nav-title">Emoji Playlist</span>
+            </a>
         </div>
         <div class="nav-right">
-            <button id="auth-btn" class="nav-button primary">로그인</button>
+            <a href="#" id="emotion-diary-link" class="nav-link nav-menu-button">Community</a>
+            <span id="auth-buttons-container">
+                <!-- Auth buttons will be dynamically inserted here by main.js -->
+            </span>
         </div>
     </nav>
 
@@ -76,6 +80,35 @@
 
     </main>
 
+    <!-- ===== Modal ===== -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            
+            <div id="login-form-container">
+                <h2>로그인</h2>
+                <form id="login-form">
+                    <input type="text" id="login-username" placeholder="아이디" required>
+                    <input type="password" id="login-password" placeholder="비밀번호" required>
+                    <button type="submit">로그인</button>
+                </form>
+                <p>계정이 없으신가요? <a href="#" id="show-register">회원가입</a></p>
+            </div>
+            
+            <div id="register-form-container" style="display:none;">
+                <h2>회원가입</h2>
+                <form id="register-form">
+                    <input type="text" id="register-username" placeholder="아이디 (4~12자)" required>
+                    <input type="password" id="register-password" placeholder="비밀번호 (6자 이상)" required>
+                    <input type="password" id="register-confirm-password" placeholder="비밀번호 확인" required>
+                    <button type="submit">가입하기</button>
+                </form>
+                <p>이미 계정이 있으신가요? <a href="#" id="show-login">로그인</a></p>
+            </div>
+
+            <p id="auth-message" class="message"></p>
+        </div>
+    </div>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="main.js"></script>
     <script src="play.js"></script>

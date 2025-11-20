@@ -173,7 +173,7 @@ app.get('/api/playlist', authenticateUser, (req, res) => {
 
 // 2. MyPlaylist에 영상 추가/제거
 app.post('/api/playlist/toggle', authenticateUser, (req, res) => {
-    const { videoId, title, thumbnail, emojiKey, genreKey } = req.body;
+    const { videoId, title, thumbnail, emojiKey, genreKey, channelTitle } = req.body;
     const { currentUser, allUsers, userIndex } = req;
 
     if (!videoId || !title) {
@@ -197,6 +197,7 @@ app.post('/api/playlist/toggle', authenticateUser, (req, res) => {
             thumbnail,
             emojiKey,
             genreKey,
+            channelTitle, // 채널 제목 추가
             addedAt: new Date().toISOString() // 추가된 시각 기록
         };
         currentUser.myPlaylist.push(newPlaylistItem);
@@ -214,6 +215,28 @@ app.post('/api/playlist/toggle', authenticateUser, (req, res) => {
         isAdded: isAdded, 
         playlist: currentUser.myPlaylist 
     });
+});
+
+// 3. MyPlaylist에서 영상 삭제
+app.post('/api/playlist/delete', authenticateUser, (req, res) => {
+    const { videoId } = req.body;
+    const { currentUser, allUsers, userIndex } = req;
+
+    if (!videoId) {
+        return res.status(400).json({ success: false, message: '삭제할 영상 ID는 필수입니다.' });
+    }
+
+    const initialPlaylistLength = currentUser.myPlaylist.length;
+    currentUser.myPlaylist = currentUser.myPlaylist.filter(item => item.videoId !== videoId);
+
+    if (currentUser.myPlaylist.length < initialPlaylistLength) {
+        // 변경된 사용자 정보를 전체 users 배열에 반영하고 저장
+        allUsers[userIndex] = currentUser;
+        saveUsers(allUsers);
+        res.json({ success: true, message: '플레이리스트에서 영상이 삭제되었습니다.' });
+    } else {
+        res.status(404).json({ success: false, message: '해당 영상을 플레이리스트에서 찾을 수 없습니다.' });
+    }
 });
 
 // 4. 익명 커뮤니티 게시글 데이터 관리

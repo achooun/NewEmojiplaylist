@@ -1,6 +1,7 @@
 /* myplaylist.css */
 
 /* main.css의 변수를 사용합니다. */
+/* :root에 --error-color: #e74c3c; 가 있다고 가정 */
 
 .my-list-header {
     padding: 40px 0 30px;
@@ -21,6 +22,12 @@
 
 .playlist-list-section {
     padding: 30px 0;
+}
+
+/* 개별 플레이리스트 카드 래퍼 */
+.playlist-card-wrapper {
+    position: relative; /* 자식 요소의 absolute 위치 지정을 위해 */
+    margin-bottom: 20px;
 }
 
 /* 가로로 긴 카드 형식의 리스트 */
@@ -100,12 +107,58 @@
     background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 8px 12px; /* 패딩 조정 */
     border-radius: 8px;
     font-weight: 700;
     transition: background-color 0.2s;
+    cursor: pointer;
+    font-size: 0.9em; /* 글자 크기 조정 */
 }
 
 .share-button:hover {
     background-color: #4C7043;
+}
+
+/* 삭제 버튼 스타일 (항상 빨간색으로) */
+.delete-button {
+    background-color: #e74c3c; /* 명시적인 빨간색 */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+/* 삭제 버튼 호버 시 더 어두운 색으로 변경 */
+.delete-button:hover {
+    background-color: #c0392b;
+}
+
+/* 버튼들을 카드 오른쪽 하단에 배치하기 위한 컨테이너 */
+.playlist-actions {
+    position: absolute;
+    bottom: 15px; /* 카드 하단으로부터의 간격 */
+    right: 15px; /* 카드 우측으로부터의 간격 */
+    display: flex;
+    gap: 10px; /* 버튼 사이 간격 */
+    z-index: 10; /* 카드 내용 위에 오도록 */
+    opacity: 0; /* 기본적으로는 숨김 */
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* 카드 래퍼에 호버 시 버튼들 표시 */
+.playlist-card-wrapper:hover .playlist-actions {
+    opacity: 1; /* 호버 시 나타남 */
+}
+
+
+/* 로딩 메시지 */
+.loading-message {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 1.2em;
+    margin-top: 50px;
 }
