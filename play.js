@@ -21,7 +21,7 @@ const YouTubeModule = (function() {
         title: document.getElementById('video-title'),
         channel: document.getElementById('channel-title'),
         likeBtn: document.getElementById('like-btn'),
-        diaryBtn: document.getElementById('diary-btn'),
+
         hashtagList: document.getElementById('hashtag-list'),
         contextChips: document.getElementById('context-chips'),
         recommendationList: document.getElementById('recommendation-list'),
@@ -299,37 +299,7 @@ const YouTubeModule = (function() {
         });
     };
 
-    /**
-     * @private
-     * 🚀 [추가] 감정 기록하기 버튼 클릭 핸들러
-     */
-    const handleDiaryButtonClick = () => {
-        const user = window.AuthModule ? window.AuthModule.getCurrentUser() : null;
-        
-        if (!user) {
-            alert('로그인해야 감정 일기를 기록할 수 있습니다.');
-            if (window.AuthModule) window.AuthModule.openModal();
-            return;
-        }
-        
-        // videoData가 로드되었는지 확인
-        if (!videoData || !videoData.snippet) {
-            alert('영상의 상세 정보가 완전히 로드된 후 시도해주세요.');
-            return;
-        }
-        
-        const snippet = videoData.snippet;
-        
-        // 모든 정보를 쿼리 파라미터로 인코딩하여 전달
-        const url = `EmotionDiary.html?videoId=${currentVideoId}` +
-                    `&emoji=${currentMood.emoji}` +
-                    `&genre=${currentMood.genre}` +
-                    `&title=${encodeURIComponent(snippet.title)}` +
-                    `&thumbnail=${encodeURIComponent(snippet.thumbnails.high.url)}` +
-                    `&channelTitle=${encodeURIComponent(snippet.channelTitle)}`;
 
-        window.location.href = url;
-    };
 
 
     // 외부로 노출할 Public API
@@ -340,7 +310,7 @@ const YouTubeModule = (function() {
             elements.likeBtn.addEventListener('click', handleLikeButtonClick);
             
             // 🚀 [수정] 기존 alert 대신 실제 함수 연결
-            elements.diaryBtn.addEventListener('click', handleDiaryButtonClick); 
+
 
             // 1. 선택된 키워드 표시
             renderMoodChips();

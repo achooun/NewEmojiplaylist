@@ -40,13 +40,9 @@ const AuthModule = (function() {
 
             const commonBtnClass = 'nav-button';
             elements.authButtons.innerHTML = `
-                <button id="my-list-btn" class="${commonBtnClass}">MyList</button>
-                <button id="chart-btn" class="${commonBtnClass}">감정 분석</button>
                 <button id="logout-btn" class="${commonBtnClass} primary">로그아웃</button>
             `;
 
-            document.getElementById('my-list-btn').addEventListener('click', () => window.location.href = 'myplaylist.html');
-            document.getElementById('chart-btn').addEventListener('click', () => window.location.href = 'emotion_chart.html');
             document.getElementById('logout-btn').addEventListener('click', publicApi.logout);
             
             if (window.SelectionModule) SelectionModule.enableSelection();
