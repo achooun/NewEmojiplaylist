@@ -25,6 +25,9 @@
             <a href="emotion_chart.html" id="emotion-analysis-link" class="nav-link nav-menu-button">Emotion Analysis</a>
             <a href="EmotionDiary.html" id="emotion-diary-link" class="nav-link nav-menu-button">Community</a>
             <a href="myplaylist.html" id="myplaylist-link" class="nav-link nav-menu-button">My Playlist</a>
+            <span id="auth-buttons-container">
+                <!-- Auth buttons will be dynamically inserted here by main.js -->
+            </span>
         </div>
     </nav>
 
@@ -64,6 +67,36 @@
 
     </main>
     
+    <!-- ===== Modal (main.js AuthModule 사용) ===== -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            
+            <div id="login-form-container">
+                <h2>로그인</h2>
+                <form id="login-form">
+                    <input type="text" id="login-username" placeholder="아이디" required>
+                    <input type="password" id="login-password" placeholder="비밀번호" required>
+                    <button type="submit">로그인</button>
+                </form>
+                <p>계정이 없으신가요? <a href="#" id="show-register">회원가입</a></p>
+            </div>
+            
+            <div id="register-form-container" style="display:none;">
+                <h2>회원가입</h2>
+                <form id="register-form">
+                    <input type="text" id="register-username" placeholder="아이디 (4~12자)" required>
+                    <input type="password" id="register-password" placeholder="비밀번호 (6자 이상)" required>
+                    <input type="password" id="register-confirm-password" placeholder="비밀번호 확인" required>
+                    <button type="submit">가입하기</button>
+                </form>
+                <p>이미 계정이 있으신가요? <a href="#" id="show-login">로그인</a></p>
+            </div>
+
+            <p id="auth-message" class="message"></p>
+        </div>
+    </div>
+
     <!-- AuthModule 초기화를 위해 main.js를 로드합니다. -->
     <script src="main.js"></script>
     <script src="EmotionDiary.js"></script>

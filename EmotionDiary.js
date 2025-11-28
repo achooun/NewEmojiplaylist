@@ -2,11 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // API 기본 URL
-    //const API_BASE_URL = 'http://localhost:3000/api'; 
-    
-    // 현재 로그인 사용자 및 공유할 영상 정보
-    let currentUser = window.AuthModule ? window.AuthModule.getCurrentUser() : null;
+    // 공유할 영상 정보
     let sharedVideo = {
         videoId: null, title: null, thumbnail: null, emojiKey: null, genreKey: null, channelTitle: null
     };
@@ -26,11 +22,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // 이모지 맵 (표시용)
     const EMOJIS_MAP = { 'happy': '😊 행복', 'calm': '😌 평온', 'sad': '😢 슬픔', 'angry': '😡 분노', 'excited': '🤩 신남', 'tired': '😴 피곤' };
 
+    /**
+     * @private
+     * 인증 모듈에서 현재 사용자 가져오기 (헬퍼 함수)
+     */
+    const getCurrentUser = () => {
+        if (window.AuthModule && typeof window.AuthModule.getCurrentUser === 'function') {
+            return window.AuthModule.getCurrentUser();
+        }
+        // AuthModule이 아직 로드되지 않았거나 세션 스토리지를 직접 확인해야 할 경우
+        const sessionUser = sessionStorage.getItem('currentMoodUser');
+        return sessionUser ? JSON.parse(sessionUser) : null;
+    };
 
     /**
      * @private
      * URL 파라미터에서 공유할 영상 정보를 가져옵니다.
-     * (play.html 또는 myplaylist.html에서 전달된 정보)
      */
     const loadSharedVideoInfo = () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -40,17 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
         sharedVideo.thumbnail = urlParams.get('thumbnail');
         sharedVideo.emojiKey = urlParams.get('emoji');
         sharedVideo.genreKey = urlParams.get('genre');
-        sharedVideo.channelTitle = urlParams.get('channelTitle'); // 플레이 페이지에서 전달 가정
+        sharedVideo.channelTitle = urlParams.get('channelTitle');
 
         if (!sharedVideo.videoId) {
-            // 🚀 [핵심] videoId가 없을 때 작성 폼 숨기기
             if (elements.creationArea) {
                 elements.creationArea.style.display = 'none'; 
             }
-            // 목록 조회 기능만 실행
-            // 다른 로직은 실행하지 않음 (fetchPosts()는 init에서 이미 호출됨)
-            
-            // 사용자에게 안내
             const header = document.querySelector('.community-header h1');
             if (header) {
                 header.textContent = '익명 커뮤니티 게시판';
@@ -67,9 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     const renderSharedVideoCard = () => {
         if (!sharedVideo.videoId) {
-            elements.videoCard.innerHTML = `<p id="video-info-message">공유할 영상 정보가 URL에 없습니다. MyList 페이지에서 '감정 공유하기' 버튼을 눌러주세요.</p>`;
-            elements.diaryContent.disabled = true;
-            elements.submitBtn.disabled = true;
+            elements.videoCard.innerHTML = `<p id="video-info-message">공유할 영상 정보가 없습니다.</p>`;
             return;
         }
 
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     const renderPosts = (posts) => {
         elements.postsContainer.innerHTML = '';
-        if (posts.length === 0) {
+        if (!posts || posts.length === 0) {
             elements.postsContainer.innerHTML = `<p id="loading-posts">아직 작성된 감정 공유 글이 없습니다.</p>`;
             return;
         }
@@ -140,14 +140,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * @private
-     * 서버에서 게시글 목록을 불러옵니다.
+     * 서버에서 게시글 목록을 불러옵니다. (✨ 수정됨: 인증 헤더 추가)
      */
     const fetchPosts = async () => {
         elements.loadingMsg.textContent = '게시글을 불러오는 중...';
         elements.loadingMsg.style.display = 'block';
         
+        // 현재 로그인한 사용자 정보 가져오기
+        const currentUser = getCurrentUser();
+        
+        // 헤더 설정: 로그인했다면 Authorization 헤더 추가
+        const headers = { 'Content-Type': 'application/json' };
+        if (currentUser && currentUser.username) {
+            headers['Authorization'] = currentUser.username;
+        }
+
         try {
-            const response = await fetch(`/api/community/posts`);
+            const response = await fetch(`/api/community/posts`, {
+                method: 'GET',
+                headers: headers // ✨ 중요: 헤더 전달
+            });
+            
+            if (response.status === 403 || response.status === 401) {
+                throw new Error('권한이 없습니다. 로그인해주세요.');
+            }
+
             const data = await response.json();
 
             if (data.success) {
@@ -157,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('게시글 로드 오류:', error);
-            elements.postsContainer.innerHTML = '<p>서버와 통신하는 데 문제가 발생했습니다.</p>';
+            elements.postsContainer.innerHTML = `<p>${error.message || '서버와 통신하는 데 문제가 발생했습니다.'}</p>`;
         } finally {
             elements.loadingMsg.style.display = 'none';
         }
@@ -170,6 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleSubmitPost = async (e) => {
         e.preventDefault();
         
+        const currentUser = getCurrentUser();
+
         if (!currentUser) {
             alert('로그인 후 감상을 공유할 수 있습니다.');
             if (window.AuthModule) window.AuthModule.openModal();
@@ -199,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
-                    'Authorization': currentUser.username // 인증 체크를 위해 사용자 이름 전송
+                    'Authorization': currentUser.username // 사용자 이름 전송
                 },
                 body: JSON.stringify(postData)
             });
@@ -207,9 +226,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (data.success) {
-                alert(`감상이 성공적으로 공유되었습니다! (익명 이름: ${data.post.anonymousName})`);
-                elements.diaryContent.value = ''; // 입력 필드 초기화
-                fetchPosts(); // 목록 새로고침 (최신 글이 맨 위로)
+                alert(`감상이 성공적으로 공유되었습니다!`);
+                elements.diaryContent.value = ''; 
+                fetchPosts(); 
             } else {
                 alert(`공유 실패: ${data.message}`);
             }
@@ -223,16 +242,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // 초기화 및 이벤트 리스너 설정
-    elements.postForm.addEventListener('submit', handleSubmitPost);
-
-    // 1. 로그인 체크 (Nav Bar 상태 업데이트)
-    if (window.AuthModule) {
-        window.AuthModule.init(); 
+    if (elements.postForm) {
+        elements.postForm.addEventListener('submit', handleSubmitPost);
     }
-    
-    // 2. 공유할 영상 정보 로드
+
+    // 1. 공유할 영상 정보 로드
     loadSharedVideoInfo();
     
-    // 3. 게시글 목록 불러오기
+    // 2. 게시글 목록 불러오기
     fetchPosts();
 });
