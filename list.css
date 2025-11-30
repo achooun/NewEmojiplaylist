@@ -144,27 +144,27 @@ body {
 
 /* 감정별 배경 클래스 - 단색 배경 */
 .container.emotion-happy {
-    background-color: #FCD34D;
+    background: linear-gradient(180deg, rgba(252,210,77,0.95) 0%, rgba(255,239,179,0.9) 100%);
 }
 
 .container.emotion-calm {
-    background-color: #93C5FD;
+    background: linear-gradient(180deg, rgba(147,197,253,0.95) 0%, rgba(235,248,255,0.9) 100%);
 }
 
 .container.emotion-sad {
-    background-color: #D8B4FE;
+    background: linear-gradient(180deg, rgba(216,180,254,0.95) 0%, rgba(245,240,255,0.9) 100%);
 }
 
 .container.emotion-angry {
-    background-color: #FCA5A5;
+    background: linear-gradient(180deg, rgba(252,165,165,0.95) 0%, rgba(255,230,230,0.9) 100%);
 }
 
 .container.emotion-excited {
-    background-color: #86EFAC;
+    background: linear-gradient(180deg, rgba(134,239,172,0.95) 0%, rgba(237,255,244,0.9) 100%);
 }
 
 .container.emotion-tired {
-    background-color: #FDBA74;
+    background: linear-gradient(180deg, rgba(253,186,116,0.95) 0%, rgba(255,245,235,0.9) 100%);
 }
 
 /* 감정별 바디 배경색 변경 */
@@ -296,7 +296,7 @@ body {
     /* 16:9 비율 유지 */
     padding-top: 56.25%; 
     overflow: hidden;
-        background-color: #333;
+    background-color: transparent;
 }
 
 /* 썸네일 배경 애니메이션 - 이미지 로드 중일 때만 보임 */
