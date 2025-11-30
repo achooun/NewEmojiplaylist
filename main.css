@@ -34,6 +34,62 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* 바디 배경 애니메이션 (좌우 여백용 미묘한 효과) */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(
+            90deg,
+            rgba(147, 197, 253, 0.05) 0%,
+            transparent 20%,
+            transparent 80%,
+            rgba(196, 181, 253, 0.05) 100%
+        );
+    animation: subtle-side-glow 15s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes subtle-side-glow {
+    0% {
+        background: 
+            linear-gradient(
+                90deg,
+                rgba(147, 197, 253, 0.05) 0%,
+                transparent 20%,
+                transparent 80%,
+                rgba(196, 181, 253, 0.05) 100%
+            );
+    }
+    50% {
+        background: 
+            linear-gradient(
+                90deg,
+                rgba(147, 197, 253, 0.12) 0%,
+                transparent 25%,
+                transparent 75%,
+                rgba(196, 181, 253, 0.12) 100%
+            );
+    }
+    100% {
+        background: 
+            linear-gradient(
+                90deg,
+                rgba(147, 197, 253, 0.05) 0%,
+                transparent 20%,
+                transparent 80%,
+                rgba(196, 181, 253, 0.05) 100%
+            );
+    }
 }
 
 /* --- 2. 진입 애니메이션 --- */
@@ -520,16 +576,58 @@ form button[type="submit"]:hover { background-color: var(--primary-hover-color);
 .left-panel::before {
     background: 
         radial-gradient(
-            circle at 20% 50%,
-            rgba(255, 255, 255, 0.15) 0%,
-            transparent 50%
+            ellipse at 30% 50%,
+            rgba(255, 255, 255, 0.25) 0%,
+            transparent 60%
         ),
         radial-gradient(
-            circle at 80% 50%,
-            rgba(255, 255, 255, 0.1) 0%,
-            transparent 50%
+            ellipse at 70% 50%,
+            rgba(255, 255, 255, 0.2) 0%,
+            transparent 60%
         );
-    animation: subtle-wave 20s ease-in-out infinite;
+    animation: gentle-wave-pulse 25s ease-in-out infinite;
+}
+
+@keyframes gentle-wave-pulse {
+    0% {
+        background: 
+            radial-gradient(
+                ellipse at 30% 50%,
+                rgba(255, 255, 255, 0.25) 0%,
+                transparent 60%
+            ),
+            radial-gradient(
+                ellipse at 70% 50%,
+                rgba(255, 255, 255, 0.2) 0%,
+                transparent 60%
+            );
+    }
+    50% {
+        background: 
+            radial-gradient(
+                ellipse at 35% 45%,
+                rgba(255, 255, 255, 0.35) 0%,
+                transparent 65%
+            ),
+            radial-gradient(
+                ellipse at 65% 55%,
+                rgba(255, 255, 255, 0.3) 0%,
+                transparent 65%
+            );
+    }
+    100% {
+        background: 
+            radial-gradient(
+                ellipse at 30% 50%,
+                rgba(255, 255, 255, 0.25) 0%,
+                transparent 60%
+            ),
+            radial-gradient(
+                ellipse at 70% 50%,
+                rgba(255, 255, 255, 0.2) 0%,
+                transparent 60%
+            );
+    }
 }
 
 /* 콘텐츠는 오버레이 위에 표시되도록 z-index 조정 */
