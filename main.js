@@ -192,10 +192,11 @@ const VisualPanelModule = (function() {
         emojiDisplay: document.querySelector('.emoji-display'),
         genreDisplay: document.querySelector('.genre-display'),
         visualText: document.querySelector('.visual-text'),
+        leftPanel: document.querySelector('.left-panel'),
     };
 
     const state = {
-        mood: { emoji: '✨', name: null },
+        mood: { emoji: '✨', name: null, key: null },
         genre: { icon: '🎧', name: null }
     };
 
@@ -236,10 +237,29 @@ const VisualPanelModule = (function() {
         }, 200);
     };
 
-    const setMood = (emoji, name) => {
+    /**
+     * @private
+     * left-panel의 배경색을 감정에 따라 변경
+     */
+    const _updatePanelBackground = () => {
+        if (!elements.leftPanel) return;
+
+        // 기존 mood 클래스 제거
+        const moodClasses = ['mood-happy', 'mood-calm', 'mood-sad', 'mood-angry', 'mood-excited', 'mood-tired'];
+        elements.leftPanel.classList.remove(...moodClasses);
+
+        // 선택된 감정에 해당하는 클래스 추가
+        if (state.mood.key) {
+            elements.leftPanel.classList.add(`mood-${state.mood.key}`);
+        }
+    };
+
+    const setMood = (emoji, name, key = null) => {
         state.mood.emoji = emoji || '✨';
         state.mood.name = name;
+        state.mood.key = key;
         _render();
+        _updatePanelBackground();
     };
 
     const setGenre = (name, icon) => {
@@ -335,7 +355,7 @@ const SelectionModule = (function() {
 
         if (type === 'emoji') {
             selectedEmoji = newSelection;
-            VisualPanelModule.setMood(newIcon, newName);
+            VisualPanelModule.setMood(newIcon, newName, newSelection);
         } else {
             selectedGenre = newSelection;
             VisualPanelModule.setGenre(newName, newIcon);

@@ -46,6 +46,36 @@ const YouTubeModule = (function() {
 
     /**
      * @private
+     * 선택된 감정에 따라 배경색을 동적으로 적용합니다.
+     */
+    const applyEmotionBackground = () => {
+        const container = document.querySelector('.container');
+        if (!container) return;
+
+        // 기존 감정 클래스 제거
+        const emotionClasses = [
+            'emotion-happy',
+            'emotion-calm',
+            'emotion-sad',
+            'emotion-angry',
+            'emotion-excited',
+            'emotion-tired'
+        ];
+        
+        container.classList.remove(...emotionClasses);
+        document.body.classList.remove(...emotionClasses);
+
+        // 선택된 감정에 해당하는 클래스 추가
+        if (selectedMood.emojiKey) {
+            const emotionClass = `emotion-${selectedMood.emojiKey}`;
+            container.classList.add(emotionClass);
+            document.body.classList.add(emotionClass);
+            console.log(`[Emotion Background] Applied: ${emotionClass}`);
+        }
+    };
+
+    /**
+     * @private
      * URL 쿼리 파라미터에서 선택된 키워드를 추출합니다.
      */
     const getQueryParameters = () => {
@@ -251,6 +281,9 @@ const renderVideoList = (items) => {
             
             // 쿼리 파라미터 추출 및 유효성 검사
             if (!getQueryParameters()) return; 
+
+            // 감정별 배경색 적용
+            applyEmotionBackground();
 
             // 선택된 키워드 UI 렌더링
             renderMoodChips();

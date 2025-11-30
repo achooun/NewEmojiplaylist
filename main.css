@@ -47,6 +47,49 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 감정별 배경 정의 */
+@keyframes gradient-happy {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-calm {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-sad {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-angry {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-excited {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-tired {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 /* --- 3. 메인 레이아웃 (2-Column) --- */
 .main-wrapper {
     display: grid;
@@ -65,13 +108,51 @@ body {
     background: linear-gradient(45deg, #1e3a8a, #3b82f6, #a78bfa, #f472b6);
     background-size: 400% 400%;
     animation: gradient-animation 15s ease infinite;
-    position: relative; /* For stacking context */
+    position: relative;
+    transition: background 0.8s ease, animation 0.8s ease;
 }
 
 @keyframes gradient-animation {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+}
+
+/* 감정별 left-panel 배경 */
+.left-panel.mood-happy {
+    background: linear-gradient(45deg, #FCD34D, #FBBF24, #F59E0B, #F97316);
+    background-size: 400% 400%;
+    animation: gradient-happy 12s ease infinite;
+}
+
+.left-panel.mood-calm {
+    background: linear-gradient(45deg, #93C5FD, #60A5FA, #3B82F6, #1E40AF);
+    background-size: 400% 400%;
+    animation: gradient-calm 12s ease infinite;
+}
+
+.left-panel.mood-sad {
+    background: linear-gradient(45deg, #D8B4FE, #C084FC, #A78BFA, #9333EA);
+    background-size: 400% 400%;
+    animation: gradient-sad 12s ease infinite;
+}
+
+.left-panel.mood-angry {
+    background: linear-gradient(45deg, #FCA5A5, #F87171, #EF4444, #DC2626);
+    background-size: 400% 400%;
+    animation: gradient-angry 12s ease infinite;
+}
+
+.left-panel.mood-excited {
+    background: linear-gradient(45deg, #86EFAC, #4ADE80, #22C55E, #16A34A);
+    background-size: 400% 400%;
+    animation: gradient-excited 12s ease infinite;
+}
+
+.left-panel.mood-tired {
+    background: linear-gradient(45deg, #FECACA, #FDBA74, #FCD34D, #FBD38D);
+    background-size: 400% 400%;
+    animation: gradient-tired 12s ease infinite;
 }
 
 .visual-content {
