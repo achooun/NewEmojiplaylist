@@ -141,11 +141,13 @@ const YouTubeModule = (function() {
     const fetchVideos = async (query) => {
         elements.loadingIndicator.style.display = 'block';
         elements.videoListContainer.innerHTML = '';
-        elements.errorMessage.style.display = 'none';
+        // 로딩 안내 문구를 잠깐 보여줍니다
+        elements.errorMessage.textContent = '잠시만 기다려주세요... 검색 중입니다.';
+        elements.errorMessage.style.display = 'block';
 
         if (quotaExceeded) {
             elements.loadingIndicator.style.display = 'none';
-            elements.errorMessage.textContent = 'YouTube API 쿼터를 초과했습니다. 잠시 후 다시 시도해 주세요.';
+            elements.errorMessage.textContent = '잠시만 기다려주세요. 현재 YouTube API 쿼터를 초과하여 검색이 제한됩니다. 잠시 후 다시 시도해 주세요.';
             elements.errorMessage.style.display = 'block';
             return [];
         }
@@ -184,9 +186,9 @@ const YouTubeModule = (function() {
                 // YouTube API 오류 중에서 쿼터 초과를 탐지하여 재시도 차단
                 const reason = (data.error.errors && data.error.errors[0] && data.error.errors[0].reason) || '';
                 if (reason === 'quotaExceeded' || reason === 'dailyLimitExceeded') {
-                    quotaExceeded = true;
-                    elements.errorMessage.textContent = 'YouTube API 쿼터를 초과했습니다. 당분간 검색이 제한됩니다.';
-                    elements.errorMessage.style.display = 'block';
+                        quotaExceeded = true;
+                        elements.errorMessage.textContent = '잠시만 기다려주세요. YouTube API 쿼터를 초과하여 당분간 검색이 제한됩니다.';
+                        elements.errorMessage.style.display = 'block';
                     console.warn('[YouTube API] quota exceeded:', data.error);
                     return [];
                 }
@@ -287,6 +289,11 @@ const renderVideoList = (items) => {
             elements.errorMessage.style.display = 'block';
             return;
         }
+        // 회전 애니메이션 추가
+
+        // 사용자에게 대기 안내를 먼저 보여줍니다
+        elements.errorMessage.textContent = '잠시만 기다려주세요... 다시 검색 중입니다.';
+        elements.errorMessage.style.display = 'block';
 
         // 회전 애니메이션 추가
         refreshBtn.classList.add('spinning');
@@ -295,6 +302,10 @@ const renderVideoList = (items) => {
             // 유튜브 영상 다시 검색
             const videoItems = await fetchVideos(selectedMood.keyword);
             renderVideoList(videoItems);
+            // 정상적으로 결과가 있으면 안내문은 숨깁니다
+            if (videoItems && videoItems.length > 0) {
+                elements.errorMessage.style.display = 'none';
+            }
         } finally {
             // 애니메이션 제거
             refreshBtn.classList.remove('spinning');
