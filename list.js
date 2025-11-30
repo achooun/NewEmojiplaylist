@@ -210,7 +210,7 @@ const renderVideoList = (items) => {
                 <div class="video-card ${emotionClass}" data-video-id="${videoId}">
                     <a href="${playUrl}" title="${title} 재생하기"> 
                         <div class="thumbnail-area">
-                            <img src="${thumbnailUrl}" alt="${title} 썸네일">
+                            <img src="${thumbnailUrl}" alt="${title} 썸네일" onload="this.style.background='none'">
                         </div>
                         <div class="video-info">
                             <h3>${title}</h3>
