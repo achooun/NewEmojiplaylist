@@ -6,7 +6,7 @@ const MyPlaylistModule = (function() {
     // 이모지 및 장르 데이터 (표시용)
     const EMOJIS_MAP = { 'happy': '😊 행복', 'calm': '😌 평온', 'sad': '😢 슬픔', 'angry': '😡 분노', 'excited': '🤩 신남', 'tired': '😴 피곤' };
     const GENRES_MAP = { 'pop': 'POP', 'hiphop': 'Hip-Hop', 'rnb': 'R&B', 'ballad': '발라드', 'jazz': 'Jazz', 'edm': 'EDM' };
-
+    
     const elements = {
         greeting: document.getElementById('user-greeting'),
         container: document.getElementById('playlist-container'),
