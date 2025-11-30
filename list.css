@@ -167,9 +167,30 @@ body {
     background: linear-gradient(180deg, rgba(253,186,116,0.95) 0%, rgba(255,245,235,0.9) 100%);
 }
 
-/* 감정별 바디 배경색 변경 */
+/* 감정별 바디 배경 - 밝은 톤으로 자연스러운 연결 */
+body.emotion-happy {
+    background: linear-gradient(135deg, rgba(255,250,220,1) 0%, rgba(255,243,200,1) 100%);
+}
 
-/* 감정별 동적 배경 애니메이션 */
+body.emotion-calm {
+    background: linear-gradient(135deg, rgba(240,250,255,1) 0%, rgba(225,245,255,1) 100%);
+}
+
+body.emotion-sad {
+    background: linear-gradient(135deg, rgba(250,245,255,1) 0%, rgba(240,235,255,1) 100%);
+}
+
+body.emotion-angry {
+    background: linear-gradient(135deg, rgba(255,245,245,1) 0%, rgba(255,235,235,1) 100%);
+}
+
+body.emotion-excited {
+    background: linear-gradient(135deg, rgba(245,255,245,1) 0%, rgba(235,255,240,1) 100%);
+}
+
+body.emotion-tired {
+    background: linear-gradient(135deg, rgba(255,250,240,1) 0%, rgba(255,240,220,1) 100%);
+}
 
 /* --- 선택된 키워드 표시 영역 --- */
 .selection-display {
