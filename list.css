@@ -134,19 +134,6 @@ body {
     animation: gradient-shift 15s ease infinite;
 }
 
-/* 콘텐츠 투명 오버레이 */
-body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.95);
-    z-index: 0;
-    pointer-events: none;
-    transition: background-color 0.8s ease;
-}
 
 .container {
     padding-top: 20px;
@@ -155,116 +142,34 @@ body::after {
     z-index: 1;
 }
 
-/* 감정별 배경 클래스 */
+/* 감정별 배경 클래스 - 단색 배경 */
 .container.emotion-happy {
-    background-image: var(--bg-happy);
+    background-color: #FCD34D;
 }
 
 .container.emotion-calm {
-    background-image: var(--bg-calm);
+    background-color: #93C5FD;
 }
 
 .container.emotion-sad {
-    background-image: var(--bg-sad);
+    background-color: #D8B4FE;
 }
 
 .container.emotion-angry {
-    background-image: var(--bg-angry);
+    background-color: #FCA5A5;
 }
 
 .container.emotion-excited {
-    background-image: var(--bg-excited);
+    background-color: #86EFAC;
 }
 
 .container.emotion-tired {
-    background-image: var(--bg-tired);
+    background-color: #FDBA74;
 }
 
 /* 감정별 바디 배경색 변경 */
-body.emotion-happy::after {
-    background-color: rgba(255, 255, 240, 0.97);
-}
-
-body.emotion-calm::after {
-    background-color: rgba(240, 249, 255, 0.97);
-}
-
-body.emotion-sad::after {
-    background-color: rgba(250, 245, 255, 0.97);
-}
-
-body.emotion-angry::after {
-    background-color: rgba(255, 245, 245, 0.97);
-}
-
-body.emotion-excited::after {
-    background-color: rgba(240, 255, 250, 0.97);
-}
-
-body.emotion-tired::after {
-    background-color: rgba(255, 250, 240, 0.97);
-}
 
 /* 감정별 동적 배경 애니메이션 */
-body.emotion-happy {
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(254, 243, 199, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(253, 224, 71, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.3) 0%, transparent 50%),
-        linear-gradient(45deg, #FCD34D, #FBBF24, #F59E0B);
-    background-size: 200% 200%, 200% 200%, 200% 200%, 400% 400%;
-    animation: float-particles-happy 15s ease-in-out infinite;
-}
-
-body.emotion-calm {
-    background: 
-        radial-gradient(circle at 20% 50%, rgba(191, 219, 254, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 50% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
-        linear-gradient(45deg, #93C5FD, #60A5FA, #3B82F6);
-    background-size: 200% 200%, 200% 200%, 200% 200%, 400% 400%;
-    animation: float-particles-calm 18s ease-in-out infinite;
-}
-
-body.emotion-sad {
-    background: 
-        radial-gradient(circle at 30% 70%, rgba(196, 181, 253, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 70% 30%, rgba(167, 139, 250, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.2) 0%, transparent 50%),
-        linear-gradient(45deg, #D8B4FE, #C084FC, #A78BFA);
-    background-size: 200% 200%, 200% 200%, 200% 200%, 400% 400%;
-    animation: float-particles-sad 16s ease-in-out infinite;
-}
-
-body.emotion-angry {
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(252, 165, 165, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(248, 113, 113, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.2) 0%, transparent 50%),
-        linear-gradient(45deg, #FCA5A5, #F87171, #EF4444);
-    background-size: 200% 200%, 200% 200%, 200% 200%, 400% 400%;
-    animation: float-particles-angry 14s ease-in-out infinite;
-}
-
-body.emotion-excited {
-    background: 
-        radial-gradient(circle at 20% 50%, rgba(134, 239, 172, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(74, 222, 128, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 50% 20%, rgba(34, 197, 94, 0.3) 0%, transparent 50%),
-        linear-gradient(45deg, #86EFAC, #4ADE80, #22C55E);
-    background-size: 200% 200%, 200% 200%, 200% 200%, 400% 400%;
-    animation: float-particles-excited 12s ease-in-out infinite;
-}
-
-body.emotion-tired {
-    background: 
-        radial-gradient(circle at 30% 70%, rgba(253, 230, 138, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 70% 30%, rgba(252, 211, 77, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(250, 204, 21, 0.2) 0%, transparent 50%),
-        linear-gradient(45deg, #FECACA, #FDBA74, #FCD34D);
-    background-size: 200% 200%, 200% 200%, 200% 200%, 400% 400%;
-    animation: float-particles-tired 17s ease-in-out infinite;
-}
 
 /* --- 선택된 키워드 표시 영역 --- */
 .selection-display {
@@ -391,7 +296,7 @@ body.emotion-tired {
     /* 16:9 비율 유지 */
     padding-top: 56.25%; 
     overflow: hidden;
-    background-color: #f0f0f0;
+        background-color: #333;
 }
 
 /* 썸네일 배경 애니메이션 - 이미지 로드 중일 때만 보임 */
@@ -403,65 +308,7 @@ body.emotion-tired {
     width: 100%;
     height: 100%;
     background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e);
-    background-size: 400% 400%;
-    animation: shimmer-bg 8s ease infinite;
-    z-index: 1;
-    pointer-events: none;
-}
-
-/* 감정별 썸네일 배경 - ::before 요소 */
-.video-card.emotion-happy .thumbnail-area::before {
-    background: linear-gradient(45deg, #FCD34D, #F59E0B, #FB923C, #FCD34D);
-    background-size: 400% 400%;
-    animation: shimmer-bg 6s ease infinite;
-}
-
-.video-card.emotion-calm .thumbnail-area::before {
-    background: linear-gradient(45deg, #60A5FA, #3B82F6, #1E40AF, #0284C7);
-    background-size: 400% 400%;
-    animation: shimmer-bg 8s ease infinite;
-}
-
-.video-card.emotion-sad .thumbnail-area::before {
-    background: linear-gradient(45deg, #C084FC, #A78BFA, #7C3AED, #6B21A8);
-    background-size: 400% 400%;
-    animation: shimmer-bg 9s ease infinite;
-}
-
-.video-card.emotion-angry .thumbnail-area::before {
-    background: linear-gradient(45deg, #F87171, #EF4444, #DC2626, #991B1B);
-    background-size: 400% 400%;
-    animation: shimmer-bg 5s ease infinite;
-}
-
-.video-card.emotion-excited .thumbnail-area::before {
-    background: linear-gradient(45deg, #4ADE80, #22C55E, #16A34A, #15803D);
-    background-size: 400% 400%;
-    animation: shimmer-bg 6s ease infinite;
-}
-
-.video-card.emotion-tired .thumbnail-area::before {
-    background: linear-gradient(45deg, #FDBA74, #FCD34D, #F59E0B, #DBEAFE);
-    background-size: 400% 400%;
-    animation: shimmer-bg 10s ease infinite;
-}
-
-/* 썸네일 배경 애니메이션 */
-@keyframes shimmer-bg {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-.thumbnail-area img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 2;
-}
+        background-color: #333;
 
 .video-info {
     padding: 15px;
