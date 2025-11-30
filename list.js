@@ -204,9 +204,10 @@ const renderVideoList = (items) => {
             const channelTitle = item.snippet.channelTitle;
             const thumbnailUrl = item.snippet.thumbnails.high.url;
             const playUrl = `play.html?videoId=${videoId}&emoji=${selectedMood.emojiKey}&genre=${selectedMood.genreKey}`;
+            const emotionClass = selectedMood.emojiKey ? `emotion-${selectedMood.emojiKey}` : '';
 
             const cardHTML = `
-                <div class="video-card" data-video-id="${videoId}">
+                <div class="video-card ${emotionClass}" data-video-id="${videoId}">
                     <a href="${playUrl}" title="${title} 재생하기"> 
                         <div class="thumbnail-area">
                             <img src="${thumbnailUrl}" alt="${title} 썸네일">

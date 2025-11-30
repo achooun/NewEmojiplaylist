@@ -391,6 +391,53 @@ body.emotion-tired {
     /* 16:9 비율 유지 */
     padding-top: 56.25%; 
     overflow: hidden;
+    background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e);
+    background-size: 400% 400%;
+    animation: shimmer-bg 8s ease infinite;
+}
+
+/* 썸네일 배경 애니메이션 */
+@keyframes shimmer-bg {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 감정별 썸네일 배경 */
+.video-card.emotion-happy .thumbnail-area {
+    background: linear-gradient(45deg, #FCD34D, #F59E0B, #FB923C, #FCD34D);
+    background-size: 400% 400%;
+    animation: shimmer-bg 6s ease infinite;
+}
+
+.video-card.emotion-calm .thumbnail-area {
+    background: linear-gradient(45deg, #60A5FA, #3B82F6, #1E40AF, #0284C7);
+    background-size: 400% 400%;
+    animation: shimmer-bg 8s ease infinite;
+}
+
+.video-card.emotion-sad .thumbnail-area {
+    background: linear-gradient(45deg, #C084FC, #A78BFA, #7C3AED, #6B21A8);
+    background-size: 400% 400%;
+    animation: shimmer-bg 9s ease infinite;
+}
+
+.video-card.emotion-angry .thumbnail-area {
+    background: linear-gradient(45deg, #F87171, #EF4444, #DC2626, #991B1B);
+    background-size: 400% 400%;
+    animation: shimmer-bg 5s ease infinite;
+}
+
+.video-card.emotion-excited .thumbnail-area {
+    background: linear-gradient(45deg, #4ADE80, #22C55E, #16A34A, #15803D);
+    background-size: 400% 400%;
+    animation: shimmer-bg 6s ease infinite;
+}
+
+.video-card.emotion-tired .thumbnail-area {
+    background: linear-gradient(45deg, #FDBA74, #FCD34D, #F59E0B, #DBEAFE);
+    background-size: 400% 400%;
+    animation: shimmer-bg 10s ease infinite;
 }
 
 .thumbnail-area img {
