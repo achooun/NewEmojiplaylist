@@ -43,6 +43,8 @@ const YouTubeModule = (function() {
         emojiKey: '',
         genreKey: ''
     };
+    // YouTube API 쿼터 초과 상태 플래그
+    let quotaExceeded = false;
 
     /**
      * @private
@@ -141,6 +143,13 @@ const YouTubeModule = (function() {
         elements.videoListContainer.innerHTML = '';
         elements.errorMessage.style.display = 'none';
 
+        if (quotaExceeded) {
+            elements.loadingIndicator.style.display = 'none';
+            elements.errorMessage.textContent = 'YouTube API 쿼터를 초과했습니다. 잠시 후 다시 시도해 주세요.';
+            elements.errorMessage.style.display = 'block';
+            return [];
+        }
+
         if (!API_KEY || API_KEY === 'YOUR_YOUTUBE_API_KEY') {
             elements.loadingIndicator.style.display = 'none';
             elements.errorMessage.textContent = 'API 키가 설정되지 않았습니다. list.js 파일의 API_KEY를 수정해주세요.';
@@ -172,9 +181,19 @@ const YouTubeModule = (function() {
             elements.loadingIndicator.style.display = 'none';
 
             if (data.error) {
+                // YouTube API 오류 중에서 쿼터 초과를 탐지하여 재시도 차단
+                const reason = (data.error.errors && data.error.errors[0] && data.error.errors[0].reason) || '';
+                if (reason === 'quotaExceeded' || reason === 'dailyLimitExceeded') {
+                    quotaExceeded = true;
+                    elements.errorMessage.textContent = 'YouTube API 쿼터를 초과했습니다. 당분간 검색이 제한됩니다.';
+                    elements.errorMessage.style.display = 'block';
+                    console.warn('[YouTube API] quota exceeded:', data.error);
+                    return [];
+                }
+
                 throw new Error(data.error.message || 'YouTube API 오류 발생');
             }
-            
+
             return data.items;
 
         } catch (error) {
@@ -262,6 +281,12 @@ const renderVideoList = (items) => {
     const handleRefreshClick = async () => {
         const refreshBtn = document.getElementById('refresh-btn');
         if (refreshBtn.classList.contains('spinning')) return; // 중복 클릭 방지
+
+        if (quotaExceeded) {
+            elements.errorMessage.textContent = 'YouTube API 쿼터를 초과했습니다. 잠시 후 다시 시도해 주세요.';
+            elements.errorMessage.style.display = 'block';
+            return;
+        }
 
         // 회전 애니메이션 추가
         refreshBtn.classList.add('spinning');
