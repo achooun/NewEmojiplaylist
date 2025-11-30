@@ -224,6 +224,27 @@ const renderVideoList = (items) => {
     };
 
 
+    /**
+     * @private
+     * 새로고침 버튼 클릭 핸들러
+     */
+    const handleRefreshClick = async () => {
+        const refreshBtn = document.getElementById('refresh-btn');
+        if (refreshBtn.classList.contains('spinning')) return; // 중복 클릭 방지
+
+        // 회전 애니메이션 추가
+        refreshBtn.classList.add('spinning');
+        
+        try {
+            // 유튜브 영상 다시 검색
+            const videoItems = await fetchVideos(selectedMood.keyword);
+            renderVideoList(videoItems);
+        } finally {
+            // 애니메이션 제거
+            refreshBtn.classList.remove('spinning');
+        }
+    };
+
     // 외부로 노출할 Public API
     const publicApi = {
         init: async () => {
@@ -237,6 +258,12 @@ const renderVideoList = (items) => {
             // 유튜브 영상 검색 및 리스트 렌더링
             const videoItems = await fetchVideos(selectedMood.keyword);
             renderVideoList(videoItems);
+
+            // 새로고침 버튼 이벤트 리스너 등록
+            const refreshBtn = document.getElementById('refresh-btn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', handleRefreshClick);
+            }
         }
     };
 
