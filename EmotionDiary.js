@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * @private
-     * 서버에서 게시글 목록을 불러옵니다. (✨ 수정됨: 인증 헤더 추가)
+     * 서버에서 게시글 목록을 불러옵니다.
      */
     const fetchPosts = async () => {
         elements.loadingMsg.textContent = '게시글을 불러오는 중...';
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(`/api/community/posts`, {
                 method: 'GET',
-                headers: headers // ✨ 중요: 헤더 전달
+                headers: headers 
             });
             
             if (response.status === 403 || response.status === 401) {

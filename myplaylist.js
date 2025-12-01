@@ -1,7 +1,6 @@
 // myplaylist.js (수정된 전체 코드)
 
 const MyPlaylistModule = (function() {
-    //const API_BASE_URL = 'http://localhost:3000/api';
 
     // 이모지 및 장르 데이터 (표시용)
     const EMOJIS_MAP = { 'happy': '😊 행복', 'calm': '😌 평온', 'sad': '😢 슬픔', 'angry': '😡 분노', 'excited': '🤩 신남', 'tired': '😴 피곤' };
@@ -227,5 +226,4 @@ const MyPlaylistModule = (function() {
 
 document.addEventListener('DOMContentLoaded', () => {
     MyPlaylistModule.init(); 
-    console.log('MyPlaylist Page Loaded.');
 });
