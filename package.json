@@ -1,16 +1,10 @@
 {
   "name": "project2",
   "version": "1.0.0",
-<<<<<<< Updated upstream
   "description": "",
   "main": "server.js",
-=======
-  "description": "11-14 0.0.1 set up \r 진행사항 : 기본적인 구성 완료 , 익명 커뮤니티 페이지 제작 필요(로컬 스토리지 사용)",
-  "main": "main.js",
->>>>>>> Stashed changes
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -18,22 +12,6 @@
   "dependencies": {
     "body-parser": "^2.2.1",
     "cors": "^2.8.5",
-<<<<<<< Updated upstream
     "express": "^5.1.0"
   }
-=======
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "mongoose": "^8.19.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/achooun/NewEmojiplaylist.git"
-  },
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/achooun/NewEmojiplaylist/issues"
-  },
-  "homepage": "https://github.com/achooun/NewEmojiplaylist#readme"
->>>>>>> Stashed changes
 }
