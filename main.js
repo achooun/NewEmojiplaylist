@@ -410,5 +410,4 @@ const SelectionModule = (function() {
 document.addEventListener('DOMContentLoaded', () => {
     AuthModule.init();
     SelectionModule.init();
-    console.log('App Loaded. All modules initialized.');
 });

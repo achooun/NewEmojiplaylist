@@ -193,36 +193,6 @@ const renderVideoList = (items) => {
 
     };
     
-    /**
-     * @private
-     * 좋아요 버튼 클릭 핸들러 (3번 기능 MyPlaylist 구현 시 연동)
-     */
-    const handleLikeButtonClick = (e) => {
-        const button = e.currentTarget;
-        const videoId = button.dataset.videoId;
-        const title = button.dataset.title;
-        const thumbnail = button.dataset.thumbnail;
-
-        // 임시 로그인 체크 (실제로는 세션 확인 로직 필요)
-        if (!sessionStorage.getItem('currentMoodUser')) {
-            alert('로그인해야 MyList에 추가할 수 있습니다.');
-            // window.location.href = 'main.html'; // 로그인 페이지로 이동
-            return;
-        }
-
-        if (button.classList.contains('liked')) {
-            button.classList.remove('liked');
-            button.querySelector('.material-icons').textContent = 'favorite_border';
-            console.log(`[MyList] ${title} (ID: ${videoId}) 좋아요 해제`);
-            // TODO: 서버 API 호출: MyPlaylist에서 해당 영상 제거
-        } else {
-            button.classList.add('liked');
-            button.querySelector('.material-icons').textContent = 'favorite';
-            console.log(`[MyList] ${title} (ID: ${videoId}) 좋아요 추가`);
-            // TODO: 서버 API 호출: MyPlaylist에 해당 영상 추가 (이모지, 장르 키도 함께)
-        }
-    };
-
 
     // 외부로 노출할 Public API
     const publicApi = {
@@ -247,5 +217,4 @@ const renderVideoList = (items) => {
 // 애플리케이션 초기화
 document.addEventListener('DOMContentLoaded', () => {
     YouTubeModule.init();
-    console.log('List Page Loaded.');
 });

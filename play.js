@@ -6,7 +6,6 @@ const YouTubeModule = (function() {
     const VIDEO_API_URL = 'https://www.googleapis.com/youtube/v3/videos';
     const SEARCH_API_URL = 'https://www.googleapis.com/youtube/v3/search';
 
-    //const API_BASE_URL = 'http://localhost:3000/api';
 
     // 이모지 및 장르 데이터 (일관성 유지를 위해 재정의)
     const EMOJIS_MAP = { 'happy': { emoji: '😊', name: '행복' }, 'calm': { emoji: '😌', name: '평온' }, 'sad': { emoji: '😢', name: '슬픔' }, 'angry': { emoji: '😡', name: '분노' }, 'excited': { emoji: '🤩', name: '신남' }, 'tired': { emoji: '😴', name: '피곤' } };
@@ -329,8 +328,6 @@ const YouTubeModule = (function() {
 
             // 5. 추천 영상 리스트 로드
             await fetchRecommendations();
-            
-            console.log('Play Page Loaded.');
         }
     };
 
