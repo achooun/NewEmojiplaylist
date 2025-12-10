@@ -1,9 +1,3 @@
-/**
- * =======================================================
- * 1. 인증(로그인/회원가입) 모듈: AuthModule
- * (기능적으로 큰 변경 없음, UI 업데이트 로직 유지)
- * =======================================================
- */
 const AuthModule = (function() {
     const elements = {
         modal: document.getElementById('auth-modal'),
@@ -52,7 +46,7 @@ const AuthModule = (function() {
                 elements.mainGreeting.textContent = '로그인하고 이모지를 선택해 나만의 플레이리스트를 만드세요.';
             }
             
-            // main.html 또는 루트 경로에서만 로그인 버튼 표시
+            
             if (window.location.pathname.endsWith('main.html') || window.location.pathname.endsWith('/')) {
                 elements.authButtons.innerHTML = `<button id="auth-btn" class="nav-button primary">로그인</button>`;
                 document.getElementById('auth-btn').addEventListener('click', () => publicApi.openModal('login'));
@@ -182,11 +176,6 @@ const AuthModule = (function() {
     return publicApi;
 })();
 
-/**
- * =======================================================
- * 2. 왼쪽 비주얼 패널 모듈: VisualPanelModule
- * =======================================================
- */
 const VisualPanelModule = (function() {
     const elements = {
         emojiDisplay: document.querySelector('.emoji-display'),
@@ -255,11 +244,6 @@ const VisualPanelModule = (function() {
 })();
 
 
-/**
- * =======================================================
- * 3. 이모지 및 장르 선택 모듈: SelectionModule
- * =======================================================
- */
 const SelectionModule = (function() {
     const EMOJIS = [
         { key: 'happy', emoji: '😊', name: '행복' }, { key: 'calm', emoji: '😌', name: '평온' },
@@ -341,7 +325,7 @@ const SelectionModule = (function() {
             VisualPanelModule.setGenre(newName, newIcon);
         }
         
-        msgElement.textContent = `선택된 ${type === 'emoji' ? '감정' : '장르'}: ${newName || '없음'}`; // REMOVED
+        msgElement.textContent = `선택된 ${type === 'emoji' ? '감정' : '장르'}: ${newName || '없음'}`; 
         updateCreateButton();
     };
 
@@ -404,9 +388,7 @@ const SelectionModule = (function() {
     return publicApi;
 })();
 
-// =======================================================
-// 전체 애플리케이션 초기화
-// =======================================================
+
 document.addEventListener('DOMContentLoaded', () => {
     AuthModule.init();
     SelectionModule.init();

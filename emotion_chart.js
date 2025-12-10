@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const recommendationText = document.getElementById('recommendation-text');
 
-    // 메인으로 돌아가기 버튼 이벤트 리스너
     const goToMainBtn = document.getElementById('go-to-main-btn');
     if (goToMainBtn) {
         goToMainBtn.addEventListener('click', () => {
@@ -35,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 1. 서버에서 데이터 가져오기
     fetch('/api/history', {
         headers: { 'Authorization': currentUser.username }
     })
@@ -47,8 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const emotionCounts = countOccurrences(history, 'emotion');
             const genreCounts = countOccurrences(history, 'genre');
 
-            createChart('emotionChart', '감정', emotionCounts, EMOJI_MAP, true); // isEmotionChart = true
-            createChart('genreChart', '장르', genreCounts, GENRE_MAP, false); // isEmotionChart = false
+            createChart('emotionChart', '감정', emotionCounts, EMOJI_MAP, true); 
+            createChart('genreChart', '장르', genreCounts, GENRE_MAP, false); 
 
             const mostFrequentEmotion = getMostFrequent(emotionCounts);
             const mostFrequentGenre = getMostFrequent(genreCounts);
@@ -88,12 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const backgroundColors = Object.keys(counts).map(key => {
             const colors = map[key]?.color;
-            if (colors && colors.length > 1) {
-                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, colors[0]);
-                gradient.addColorStop(1, colors[1]);
-                return gradient;
-            }
             return colors ? colors[0] : 'rgba(201, 203, 207, 0.7)';
         });
 
@@ -129,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     x: {
                         ticks: {
                             font: {
-                                size: isEmotionChart ? 24 : 14 // 이모지 폰트 크기 키우기
+                                size: isEmotionChart ? 24 : 14 
                             },
                             color: '#555'
                         },

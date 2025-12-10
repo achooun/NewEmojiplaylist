@@ -1,5 +1,3 @@
-/* emotion_diary.css */
-
 .diary-container {
     max-width: 1000px;
     margin: 0 auto;
@@ -31,7 +29,6 @@
     margin-bottom: 20px;
 }
 
-/* 🚀 공유할 영상 정보 카드 (가로로 긴 형식) */
 .shared-video-card {
     display: flex;
     align-items: center;
@@ -52,7 +49,7 @@
 .card-thumbnail {
     flex-shrink: 0;
     width: 150px;
-    height: 84px; /* 16:9 */
+    height: 84px; 
     overflow: hidden;
     border-radius: 5px;
 }
@@ -87,8 +84,8 @@
     color: white;
 }
 
-.tag-emoji { background-color: #4CAF50; } /* 녹색 계열 */
-.tag-genre { background-color: #00BCD4; } /* 파랑 계열 */
+.tag-emoji { background-color: #4CAF50; } 
+.tag-genre { background-color: #00BCD4; } 
 
 
 #diary-content {
@@ -107,15 +104,13 @@
     padding: 12px;
 }
 
-/* 🚀 게시글 리스트 영역 */
 .posts-list-grid {
     display: flex;
-    flex-direction: column; /* 최신순으로 위에 쌓이도록 */
+    flex-direction: column; 
     gap: 20px;
     margin-top: 20px;
 }
 
-/* 🚀 히스토리 카드 스타일 (가로로 긴 카드 + 글 내용) */
 .post-history-card {
     display: flex;
     flex-direction: column;

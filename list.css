@@ -1,12 +1,7 @@
-/* list.css */
-
-/* main.css의 스타일을 상속받으므로, 여기서는 추가/재정의만 합니다. */
-
 .container {
     padding-top: 20px;
 }
 
-/* --- 선택된 키워드 표시 영역 --- */
 .selection-display {
     padding: 30px 0;
     text-align: center;
@@ -29,7 +24,7 @@
     display: flex;
     align-items: center;
     padding: 10px 20px;
-    border-radius: 50px; /* 동그란 카드 형태 */
+    border-radius: 50px; 
     background-color: var(--secondary-color);
     color: var(--text-color);
     font-weight: 700;
@@ -49,7 +44,6 @@
     margin: 40px 0;
 }
 
-/* --- 유튜브 영상 리스트 영역 --- */
 .video-list-section {
     padding-bottom: 80px;
 }
@@ -63,12 +57,10 @@
 
 .video-list-grid {
     display: grid;
-    /* 3열 레이아웃, 반응형 고려 */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
 }
 
-/* 비디오 카드 스타일 */
 .video-card {
     background-color: white;
     border-radius: var(--border-radius);
@@ -86,7 +78,6 @@
 .thumbnail-area {
     position: relative;
     width: 100%;
-    /* 16:9 비율 유지 */
     padding-top: 56.25%; 
     overflow: hidden;
 }
@@ -109,7 +100,6 @@
     font-weight: 700;
     color: var(--text-color);
     margin-bottom: 8px;
-    /* 2줄로 제한 */
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -128,7 +118,6 @@
     color: var(--text-color);
 }
 
-/* 좋아요 버튼 */
 .like-btn {
     position: absolute;
     top: 10px;
@@ -158,10 +147,9 @@
 }
 
 .like-btn.liked .material-icons {
-    color: crimson; /* 좋아요 눌렀을 때 색상 */
+    color: crimson; 
 }
 
-/* 로딩 및 에러 메시지 */
 .loading, .error-msg {
     text-align: center;
     padding: 50px 0;

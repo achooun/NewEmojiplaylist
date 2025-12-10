@@ -1,25 +1,20 @@
-/* play.css */
-
-/* --- 메인 콘텐츠 레이아웃 --- */
 .container {
     padding-top: 30px;
-    /* list.html과 달리, 영상 플레이어를 위해 너비를 조금 더 넓힙니다. */
     max-width: 1200px;
 }
 
 .video-container-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* 플레이어 2: 추천 리스트 1 비율 */
+    grid-template-columns: 2fr 1fr; 
     gap: 30px;
 }
 
 @media (max-width: 900px) {
     .video-container-grid {
-        grid-template-columns: 1fr; /* 모바일에서는 수직 배열 */
+        grid-template-columns: 1fr; 
     }
 }
 
-/* --- 감정/장르 컨텍스트 칩 (main/list.css의 .chip 스타일 사용) --- */
 .mood-context {
     padding: 10px 0;
     margin-bottom: 20px;
@@ -38,7 +33,6 @@
 }
 
 .chip {
-    /* list.css에서 정의된 스타일 재사용 */
     display: flex;
     align-items: center;
     padding: 8px 15px;
@@ -54,18 +48,12 @@
     margin-right: 8px;
 }
 
-/* ---------------------------------------------------- */
-/* --- 🛠️ 수정된 영상 플레이어 영역 스타일 --- */
-/* ---------------------------------------------------- */
 .player-area {
-    /* 비디오 플레이어와 정보 영역을 포함 */
 }
 
-/* 🚀 [수정] #player-iframe 대신 #player-container를 사용 */
 #player-container {
     position: relative;
     width: 100%;
-    /* 16:9 비율 유지 */
     padding-top: 56.25%; 
     background-color: #000;
     border-radius: var(--border-radius);
@@ -73,7 +61,6 @@
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* 🚀 [수정] YT Player가 삽입될 #player와 그 안의 iframe에 100% 크기 적용 */
 #player, #player iframe, .video-placeholder {
     position: absolute;
     top: 0;
@@ -90,7 +77,6 @@
     font-size: 1.2em;
 }
 
-/* --- 영상 정보 및 액션 영역 --- */
 .video-actions-info {
     padding-top: 20px;
 }
@@ -123,7 +109,6 @@
     transition: background-color 0.2s;
 }
 
-/* 좋아요 버튼 스타일 */
 .like-btn {
     background-color: var(--card-bg);
     color: var(--text-color);
@@ -144,7 +129,6 @@
     margin-right: 5px;
 }
 
-/* 해시태그 리스트 */
 .hashtag-list {
     display: flex;
     flex-wrap: wrap;
@@ -159,7 +143,6 @@
     font-size: 0.9em;
 }
 
-/* --- 추천 영상 영역 --- */
 .recommendation-area h2 {
     font-size: 1.2em;
     font-weight: 700;

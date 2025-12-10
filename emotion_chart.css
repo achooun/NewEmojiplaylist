@@ -1,6 +1,3 @@
-/* emotion_chart.css */
-
-/* 로고 컨테이너 스타일 */
 #logo-container {
     text-align: center;
     padding: 20px 0;
@@ -10,7 +7,7 @@
 }
 
 #logo-container .logo-img {
-    max-width: 120px; /* 로고 크기 살짝 줄임 */
+    max-width: 120px; 
     height: auto;
     display: block;
     margin: 0 auto 10px auto;

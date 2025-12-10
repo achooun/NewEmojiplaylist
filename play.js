@@ -1,20 +1,16 @@
-// play.js (전체 코드)
-
 const YouTubeModule = (function() {
-    // ⚠️ API 키를 main.js와 동일하게 설정 (보안상 백엔드에서 처리 권장)
     const API_KEY = 'AIzaSyCGDl-2-k-LLr89YGfYDTb15Ed6J5yECJA'; 
     const VIDEO_API_URL = 'https://www.googleapis.com/youtube/v3/videos';
     const SEARCH_API_URL = 'https://www.googleapis.com/youtube/v3/search';
 
 
-    // 이모지 및 장르 데이터 (일관성 유지를 위해 재정의)
     const EMOJIS_MAP = { 'happy': { emoji: '😊', name: '행복' }, 'calm': { emoji: '😌', name: '평온' }, 'sad': { emoji: '😢', name: '슬픔' }, 'angry': { emoji: '😡', name: '분노' }, 'excited': { emoji: '🤩', name: '신남' }, 'tired': { emoji: '😴', name: '피곤' } };
     const GENRES_MAP = { 'pop': 'POP', 'hiphop': 'Hip-Hop', 'rnb': 'R&B', 'ballad': '발라드', 'jazz': 'Jazz', 'edm': 'EDM' };
 
     let currentVideoId = null;
     let currentMood = { emoji: null, genre: null };
-    let player = null; // YouTube Iframe Player 객체
-    let videoData = null; // 현재 재생 중인 영상 상세 정보
+    let player = null; 
+    let videoData = null; 
 
     const elements = {
         title: document.getElementById('video-title'),
@@ -27,10 +23,6 @@ const YouTubeModule = (function() {
         navRight: document.querySelector('.nav-right')
     };
 
-    /**
-     * @private
-     * URL 쿼리 파라미터에서 정보 추출 및 유효성 검사
-     */
     const getQueryParameters = () => {
         const params = new URLSearchParams(window.location.search);
         currentVideoId = params.get('videoId');
@@ -45,15 +37,10 @@ const YouTubeModule = (function() {
         return true;
     };
 
-    /**
-     * @private
-     * 🎯 선택된 감정/장르 칩을 UI에 표시합니다.
-     */
     const renderMoodChips = () => {
         const { emoji, genre } = currentMood;
-        elements.contextChips.innerHTML = ''; // 초기화
+        elements.contextChips.innerHTML = ''; 
 
-        // 이모지 칩
         if (emoji && EMOJIS_MAP[emoji]) {
             const emojiData = EMOJIS_MAP[emoji];
             elements.contextChips.innerHTML += `
@@ -63,7 +50,6 @@ const YouTubeModule = (function() {
                 </div>
             `;
         }
-        // 장르 칩
         if (genre && GENRES_MAP[genre]) {
             elements.contextChips.innerHTML += `
                 <div class="chip">
@@ -74,27 +60,19 @@ const YouTubeModule = (function() {
         }
     };
 
-    /**
-     * @private
-     * YouTube Player Iframe을 초기화합니다.
-     * 🚀 [수정] YT.Player의 첫 번째 인자를 'player-iframe'에서 'player'로 변경했습니다.
-     */
     const initYouTubePlayer = () => {
-        // 이 함수는 YouTube API 스크립트가 로드된 후 onYouTubeIframeAPIReady 전역 함수를 통해 호출됩니다.
         window.onYouTubeIframeAPIReady = function() {
-            // 🚀 [수정] ID를 'player'로 변경
             player = new YT.Player('player', { 
                 videoId: currentVideoId,
                 playerVars: {
                     'autoplay': 1,
                     'modestbranding': 1,
-                    'rel': 0 // 관련 영상 표시 안 함
+                    'rel': 0 
                 },
                 events: {
                     'onReady': onPlayerReady
                 }
             });
-            // 로딩 플레이스홀더를 숨기기 위해 컨테이너에 스타일 적용 (CSS에서 처리할 수도 있음)
             document.getElementById('player').style.backgroundColor = 'black'; 
         };
     };
@@ -104,10 +82,6 @@ const YouTubeModule = (function() {
     };
 
 
-    /**
-     * @private
-     * 영상 상세 정보 (제목, 채널, 태그)를 가져옵니다.
-     */
     const fetchVideoDetails = async (videoId) => {
         try {
             const params = new URLSearchParams({
@@ -122,11 +96,9 @@ const YouTubeModule = (function() {
                 videoData = data.items[0];
                 const snippet = videoData.snippet;
                 
-                // UI 업데이트
                 elements.title.textContent = snippet.title;
                 elements.channel.textContent = `채널: ${snippet.channelTitle}`;
                 
-                // 해시태그 렌더링
                 renderHashtags(snippet.tags || []); 
 
                 return videoData;
@@ -139,14 +111,10 @@ const YouTubeModule = (function() {
         }
     };
     
-    /**
-     * @private
-     * 영상의 해시태그를 렌더링합니다.
-     */
     const renderHashtags = (tags) => {
         elements.hashtagList.innerHTML = '';
         if (tags && tags.length > 0) {
-            tags.slice(0, 5).forEach(tag => { // 최대 5개만 표시
+            tags.slice(0, 5).forEach(tag => { 
                 elements.hashtagList.innerHTML += `<span class="hashtag">#${tag}</span>`;
             });
         } else {
@@ -154,14 +122,8 @@ const YouTubeModule = (function() {
         }
     };
 
-/**
-     * @private
-     * 좋아요 버튼 클릭 핸들러: MyList에 영상을 추가/제거하고 서버와 통신합니다.
-     */
     const handleLikeButtonClick = async () => { 
-        // 1. 사전 검증 및 데이터 준비
         let user = window.AuthModule ? window.AuthModule.getCurrentUser() : null;
-        // AuthModule의 상태가 유실되었을 경우를 대비해 sessionStorage에서 직접 확인
         if (!user) {
             const sessionUser = sessionStorage.getItem('currentMoodUser');
             if (sessionUser) {
@@ -169,36 +131,30 @@ const YouTubeModule = (function() {
             }
         }
         
-        // videoData는 fetchVideoDetails 함수에서 가져온 전역 변수여야 합니다.
         const videoDetails = videoData ? videoData.snippet : {}; 
 
         if (!user || !currentVideoId || !videoDetails.title) {
             alert('로그인해야 MyList에 추가할 수 있습니다.');
-            // play.html에는 로그인 모달이 없으므로, 로그인 페이지로 이동하거나 다른 처리를 제안해야 함.
-            // 여기서는 AuthModule.openModal() 호출을 제거합니다.
             return;
         }
 
-        // 로딩 상태 표시
         elements.likeBtn.disabled = true;
 
         const bodyData = {
             videoId: currentVideoId,
             title: videoDetails.title,
-            // 썸네일 정보는 list.html에서 전달된 값이 없다면 high.url을 사용합니다.
             thumbnail: videoDetails.thumbnails?.high?.url, 
-            emojiKey: currentMood.emoji, // 현재 선택된 감정/장르 (URL 파라미터에서 가져온 값)
+            emojiKey: currentMood.emoji, 
             genreKey: currentMood.genre,
             channelTitle: videoDetails.channelTitle
         };
 
-        // 2. 서버 통신 (MyPlaylist 토글 API)
         try {
             const response = await fetch(`/api/playlist/toggle`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
-                    'Authorization': user.username // 📌 [핵심] 인증을 위한 사용자 이름 헤더 전송
+                    'Authorization': user.username 
                 },
                 body: JSON.stringify(bodyData)
             });
@@ -209,7 +165,6 @@ const YouTubeModule = (function() {
                 return;
             }
 
-            // 3. UI 업데이트
             const icon = elements.likeBtn.querySelector('.material-icons');
             const text = elements.likeBtn.querySelector('span:last-child');
             
@@ -233,12 +188,7 @@ const YouTubeModule = (function() {
         }
     };
 
-    /**
-     * @private
-     * 💡 관련 영상 추천 리스트를 가져와 렌더링합니다. (현재 장르 키워드 사용)
-     */
     const fetchRecommendations = async () => {
-        // 현재 영상과 같은 장르 + 인기 영상 키워드로 검색
         const query = `${GENRES_MAP[currentMood.genre]} 인기곡`;
         
         try {
@@ -253,10 +203,9 @@ const YouTubeModule = (function() {
             const response = await fetch(`${SEARCH_API_URL}?${params.toString()}`);
             const data = await response.json();
             
-            // 현재 재생 중인 영상을 추천 리스트에서 제외
             const items = data.items.filter(item => item.id.videoId !== currentVideoId);
 
-            renderRecommendations(items.slice(0, 4)); // 최대 4개만 표시
+            renderRecommendations(items.slice(0, 4)); 
 
         } catch (error) {
             console.error('Recommendation Fetch Error:', error);
@@ -264,10 +213,6 @@ const YouTubeModule = (function() {
         }
     };
     
-    /**
-     * @private
-     * 추천 영상을 렌더링합니다.
-     */
     const renderRecommendations = (items) => {
         elements.recommendationList.innerHTML = '';
         if (items.length === 0) {
@@ -279,9 +224,8 @@ const YouTubeModule = (function() {
             const videoId = item.id.videoId;
             const title = item.snippet.title;
             const channelTitle = item.snippet.channelTitle;
-            const thumbnailUrl = item.snippet.thumbnails.default.url; // 작은 썸네일 사용
+            const thumbnailUrl = item.snippet.thumbnails.default.url; 
 
-            // URL을 play.html로 설정하여 클릭 시 새 영상 재생 페이지로 이동
             const url = `play.html?videoId=${videoId}&emoji=${currentMood.emoji}&genre=${currentMood.genre}`;
 
             elements.recommendationList.innerHTML += `
@@ -301,37 +245,27 @@ const YouTubeModule = (function() {
 
 
 
-    // 외부로 노출할 Public API
     const publicApi = {
         init: async () => {
             if (!getQueryParameters()) return;
             
             elements.likeBtn.addEventListener('click', handleLikeButtonClick);
             
-            // 🚀 [수정] 기존 alert 대신 실제 함수 연결
-
-
-            // 1. 선택된 키워드 표시
             renderMoodChips();
 
-            // 2. YouTube 플레이어 준비
             initYouTubePlayer();
 
-            // 3. 영상 상세 정보 및 해시태그 로드
             await fetchVideoDetails(currentVideoId);
             
-            // 4. MyList 상태 확인
             const myPlaylist = await fetchMyPlaylist();
             if (myPlaylist) {
                 updateLikeButtonStatus(myPlaylist, currentVideoId);
             }
 
-            // 5. 추천 영상 리스트 로드
             await fetchRecommendations();
         }
     };
 
-    // 추가된 함수: MyPlaylist 정보 가져오기
     const fetchMyPlaylist = async () => {
         const sessionUser = sessionStorage.getItem('currentMoodUser');
         if (!sessionUser) return null;
@@ -355,7 +289,6 @@ const YouTubeModule = (function() {
         }
     };
 
-    // 추가된 함수: 좋아요 버튼 상태 업데이트
     const updateLikeButtonStatus = (playlist, videoId) => {
         const isLiked = playlist.some(item => item.videoId === videoId);
         if (isLiked) {

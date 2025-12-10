@@ -1,13 +1,9 @@
-// emotion_diary.js
-
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 공유할 영상 정보
     let sharedVideo = {
         videoId: null, title: null, thumbnail: null, emojiKey: null, genreKey: null, channelTitle: null
     };
 
-    // DOM 요소 캐시
     const elements = {
         postForm: document.getElementById('post-form'),
         videoCard: document.getElementById('shared-video-card'),
@@ -19,26 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
         main: document.querySelector('main')
     };
 
-    // 이모지 맵 (표시용)
     const EMOJIS_MAP = { 'happy': '😊 행복', 'calm': '😌 평온', 'sad': '😢 슬픔', 'angry': '😡 분노', 'excited': '🤩 신남', 'tired': '😴 피곤' };
 
-    /**
-     * @private
-     * 인증 모듈에서 현재 사용자 가져오기 (헬퍼 함수)
-     */
     const getCurrentUser = () => {
         if (window.AuthModule && typeof window.AuthModule.getCurrentUser === 'function') {
             return window.AuthModule.getCurrentUser();
         }
-        // AuthModule이 아직 로드되지 않았거나 세션 스토리지를 직접 확인해야 할 경우
         const sessionUser = sessionStorage.getItem('currentMoodUser');
         return sessionUser ? JSON.parse(sessionUser) : null;
     };
 
-    /**
-     * @private
-     * URL 파라미터에서 공유할 영상 정보를 가져옵니다.
-     */
     const loadSharedVideoInfo = () => {
         const urlParams = new URLSearchParams(window.location.search);
         
@@ -63,10 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderSharedVideoCard();
     };
 
-    /**
-     * @private
-     * 공유할 영상 정보 카드를 렌더링합니다.
-     */
     const renderSharedVideoCard = () => {
         if (!sharedVideo.videoId) {
             elements.videoCard.innerHTML = `<p id="video-info-message">공유할 영상 정보가 없습니다.</p>`;
@@ -93,10 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.submitBtn.disabled = false;
     };
     
-    /**
-     * @private
-     * 게시글 리스트를 렌더링합니다.
-     */
     const renderPosts = (posts) => {
         elements.postsContainer.innerHTML = '';
         if (!posts || posts.length === 0) {
@@ -138,18 +116,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    /**
-     * @private
-     * 서버에서 게시글 목록을 불러옵니다.
-     */
     const fetchPosts = async () => {
         elements.loadingMsg.textContent = '게시글을 불러오는 중...';
         elements.loadingMsg.style.display = 'block';
         
-        // 현재 로그인한 사용자 정보 가져오기
         const currentUser = getCurrentUser();
         
-        // 헤더 설정: 로그인했다면 Authorization 헤더 추가
         const headers = { 'Content-Type': 'application/json' };
         if (currentUser && currentUser.username) {
             headers['Authorization'] = currentUser.username;
@@ -180,10 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    /**
-     * @private
-     * 새 게시글을 서버에 제출합니다.
-     */
     const handleSubmitPost = async (e) => {
         e.preventDefault();
         
@@ -218,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
-                    'Authorization': currentUser.username // 사용자 이름 전송
+                    'Authorization': currentUser.username 
                 },
                 body: JSON.stringify(postData)
             });
@@ -241,14 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // 초기화 및 이벤트 리스너 설정
     if (elements.postForm) {
         elements.postForm.addEventListener('submit', handleSubmitPost);
     }
 
-    // 1. 공유할 영상 정보 로드
     loadSharedVideoInfo();
     
-    // 2. 게시글 목록 불러오기
     fetchPosts();
 });

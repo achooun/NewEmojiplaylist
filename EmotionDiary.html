@@ -11,7 +11,7 @@
 </head>
 <body>
 
-    <!-- Nav 바 (main.js가 상태 관리) -->
+    
     <nav id="navbar">
         <div class="nav-left">
             <a href="main.html" class="logo-link">
@@ -26,7 +26,7 @@
             <a href="EmotionDiary.html" id="emotion-diary-link" class="nav-link nav-menu-button">Community</a>
             <a href="myplaylist.html" id="myplaylist-link" class="nav-link nav-menu-button">My Playlist</a>
             <span id="auth-buttons-container">
-                <!-- Auth buttons will be dynamically inserted here by main.js -->
+                
             </span>
         </div>
     </nav>
@@ -38,13 +38,13 @@
             <p>당신의 감정 플레이리스트를 공유하고 익명으로 감상을 나누세요.</p>
         </section>
 
-        <!-- 🚀 1. 일기 작성 폼 및 공유 영상 정보 카드 -->
+        
         <section class="post-creation-area">
             <h2>나의 감상 기록하기</h2>
             
-            <!-- 공유할 영상 정보 카드 (가로로 긴 형식) -->
+            
             <div id="shared-video-card" class="shared-video-card">
-                <!-- JS에서 영상 정보가 여기에 로드됩니다. -->
+                
                 <p id="video-info-message">플레이리스트에서 공유할 영상을 선택해주세요.</p>
             </div>
             
@@ -56,18 +56,18 @@
         
         <hr class="divider">
 
-        <!-- 🚀 2. 다른 사람들의 게시물 리스트 -->
+        
         <section class="post-list-area">
             <h2>다른 사람들의 감정 공유 히스토리</h2>
             <div id="posts-container" class="posts-list-grid">
-                <!-- 게시글 목록이 여기에 렌더링됩니다. (최신순) -->
+                
                 <p id="loading-posts">게시물을 불러오는 중...</p>
             </div>
         </section>
 
     </main>
     
-    <!-- ===== Modal (main.js AuthModule 사용) ===== -->
+    
     <div id="auth-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
@@ -97,7 +97,7 @@
         </div>
     </div>
 
-    <!-- AuthModule 초기화를 위해 main.js를 로드합니다. -->
+    
     <script src="main.js"></script>
     <script src="EmotionDiary.js"></script>
 </body>

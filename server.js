@@ -1,5 +1,3 @@
-// server.js (수정된 전체 코드)
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
@@ -10,17 +8,9 @@ const app = express();
 const PORT = 3000;
 const USERS_FILE = path.join(__dirname, 'users.json');
 
-// 미들웨어 설정
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '.')));
-
-
-/**
- * =======================================================
- * 사용자 데이터 관리 함수
- * =======================================================
- */
 
 const getUsers = () => {
     try {
@@ -40,18 +30,10 @@ const saveUsers = (users) => {
     }
 };
 
-/**
- * @middleware
- * 로그인 상태 확인 및 사용자 객체 추가 (인증 미들웨어 역할)
- * - 실제 구현에서는 JWT 토큰 검증 로직이 들어가야 하지만, 
- * - 현재는 세션 스토리지에서 넘어온 username으로 사용자 존재 유무만 확인합니다.
- */
 const authenticateUser = (req, res, next) => {
-    // 프론트엔드에서 헤더에 'Authorization: <username>' 형식으로 보냈다고 가정
     const username = req.headers.authorization; 
     
     if (!username) {
-        // 401 Unauthorized 대신, 권한 부족 403을 명확히 사용
         return res.status(403).json({ success: false, message: '로그인이 필요합니다.' }); 
     }
     
@@ -68,14 +50,8 @@ const authenticateUser = (req, res, next) => {
     next();
 };
 
-/**
- * =======================================================
- * 인증 API 엔드포인트 (기존 유지)
- * =======================================================
- */
 app.post('/api/register', (req, res) => {
     const { username, password } = req.body;
-    // ... (기존 회원가입 로직 유지)
     if (!username || username.length < 4 || username.length > 12 || !password || password.length < 6) {
         return res.status(400).json({ success: false, message: '아이디는 4~12자, 비밀번호는 6자 이상이어야 합니다.' });
     }
@@ -94,7 +70,6 @@ app.post('/api/register', (req, res) => {
 
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
-    // ... (기존 로그인 로직 유지)
     if (!username || !password) {
         return res.status(400).json({ success: false, message: '아이디와 비밀번호를 입력해주세요.' });
     }
@@ -109,14 +84,6 @@ app.post('/api/login', (req, res) => {
     }
 });
 
-
-/**
- * =======================================================
- * 감정/장르 선택 기록 API
- * =======================================================
- */
-
-// 1. 감정/장르 선택 기록 추가
 app.post('/api/history', authenticateUser, (req, res) => {
     const { emotion, genre } = req.body;
     const { currentUser, allUsers, userIndex } = req;
@@ -125,7 +92,6 @@ app.post('/api/history', authenticateUser, (req, res) => {
         return res.status(400).json({ success: false, message: '감정과 장르 정보는 필수입니다.' });
     }
 
-    // selectionHistory 필드가 없으면 초기화
     if (!currentUser.selectionHistory) {
         currentUser.selectionHistory = [];
     }
@@ -144,30 +110,18 @@ app.post('/api/history', authenticateUser, (req, res) => {
     res.json({ success: true, message: '선택 기록이 저장되었습니다.' });
 });
 
-// 2. 감정/장르 선택 기록 조회
 app.get('/api/history', authenticateUser, (req, res) => {
     const { currentUser } = req;
     
-    // selectionHistory 필드가 없으면 빈 배열 반환
     const history = currentUser.selectionHistory || [];
     
     res.json({ success: true, history });
 });
 
-
-/**
- * =======================================================
- * 3. MyPlaylist API 엔드포인트 (새로 추가)
- * =======================================================
- */
-
-// 1. MyPlaylist 조회
 app.get('/api/playlist', authenticateUser, (req, res) => {
-    // authenticateUser 미들웨어를 통과하면 req.currentUser에 사용자 정보가 있습니다.
     res.json({ success: true, playlist: req.currentUser.myPlaylist });
 });
 
-// 2. MyPlaylist에 영상 추가/제거
 app.post('/api/playlist/toggle', authenticateUser, (req, res) => {
     const { videoId, title, thumbnail, emojiKey, genreKey, channelTitle } = req.body;
     const { currentUser, allUsers, userIndex } = req;
@@ -181,27 +135,24 @@ app.post('/api/playlist/toggle', authenticateUser, (req, res) => {
     let isAdded = false;
 
     if (existingIndex !== -1) {
-        // 이미 존재하면 삭제 (토글 기능)
         currentUser.myPlaylist.splice(existingIndex, 1);
         message = '플레이리스트에서 영상이 제거되었습니다.';
         isAdded = false;
     } else {
-        // 없으면 추가
         const newPlaylistItem = {
             videoId,
             title,
             thumbnail,
             emojiKey,
             genreKey,
-            channelTitle, // 채널 제목 추가
-            addedAt: new Date().toISOString() // 추가된 시각 기록
+            channelTitle, 
+            addedAt: new Date().toISOString() 
         };
         currentUser.myPlaylist.push(newPlaylistItem);
         message = '플레이리스트에 영상이 추가되었습니다.';
         isAdded = true;
     }
 
-    // 변경된 사용자 정보를 전체 users 배열에 반영하고 저장
     allUsers[userIndex] = currentUser;
     saveUsers(allUsers);
 
@@ -213,7 +164,6 @@ app.post('/api/playlist/toggle', authenticateUser, (req, res) => {
     });
 });
 
-// 3. MyPlaylist에서 영상 삭제
 app.post('/api/playlist/delete', authenticateUser, (req, res) => {
     const { videoId } = req.body;
     const { currentUser, allUsers, userIndex } = req;
@@ -226,7 +176,6 @@ app.post('/api/playlist/delete', authenticateUser, (req, res) => {
     currentUser.myPlaylist = currentUser.myPlaylist.filter(item => item.videoId !== videoId);
 
     if (currentUser.myPlaylist.length < initialPlaylistLength) {
-        // 변경된 사용자 정보를 전체 users 배열에 반영하고 저장
         allUsers[userIndex] = currentUser;
         saveUsers(allUsers);
         res.json({ success: true, message: '플레이리스트에서 영상이 삭제되었습니다.' });
@@ -235,7 +184,6 @@ app.post('/api/playlist/delete', authenticateUser, (req, res) => {
     }
 });
 
-// 4. 익명 커뮤니티 게시글 데이터 관리
 const POSTS_FILE = 'posts.json';
 let communityPosts = []; 
 
@@ -262,13 +210,7 @@ function saveCommunityPosts() {
     }
 }
 
-// =======================================================
-// 5. 익명 커뮤니티 (게시판) API
-// =======================================================
-
-// 1. 게시글 작성 API
 app.post('/api/community/post', (req, res) => {
-    // 로그인 여부만 확인 (Authorization 헤더로 확인)
     if (!req.header('Authorization')) {
         return res.status(401).send({ success: false, message: '로그인 후 이용 가능합니다.' });
     }
@@ -289,8 +231,8 @@ app.post('/api/community/post', (req, res) => {
         channelTitle,
         content,
         timestamp: new Date().toISOString(),
-        authorId: req.header('Authorization'), // 작성자 식별자 (실제 표시될 때는 '익명' 처리)
-        anonymousName: `익명${Math.floor(Math.random() * 900) + 100}` // 익명 이름 생성
+        authorId: req.header('Authorization'), 
+        anonymousName: `익명${Math.floor(Math.random() * 900) + 100}` 
     };
     
     communityPosts.push(newPost);
@@ -303,16 +245,13 @@ app.post('/api/community/post', (req, res) => {
     });
 });
 
-// 2. 게시글 전체 조회 API (최신순)
 app.get('/api/community/posts', (req, res) => {
-    // 최신 글이 위에 오도록 내림차순 정렬
     const sortedPosts = communityPosts.slice().sort((a, b) => b.id - a.id);
     
-    // 민감 정보(authorId)는 제거하고 익명 이름으로 대체하여 반환
     const sanitizedPosts = sortedPosts.map(post => ({
         ...post,
-        authorId: undefined, // 실제 ID 삭제
-        author: post.anonymousName // 익명 이름 사용
+        authorId: undefined, 
+        author: post.anonymousName 
     }));
 
     res.send({
@@ -321,14 +260,8 @@ app.get('/api/community/posts', (req, res) => {
     });
 });
 
-
-
-
-// 서버 시작 시 호출되는 곳에 추가 (app.listen 위에)
 loadCommunityPosts();
 
-
-// 서버 시작
 app.listen(PORT, () => {
     console.log(`🚀 서버가 http://localhost:${PORT} 에서 실행 중입니다.`);
     console.log(`Node.js 백엔드와 프론트엔드를 함께 테스트하려면 http://localhost:${PORT}/main.html 로 접속하세요.`);
